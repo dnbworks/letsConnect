@@ -113,42 +113,7 @@
     <p>Would you like to <a href="edit-profile.php">Edit your profile</a></p>
 
 
-    <!-- <div class="row">
-            <div class="col-12 col-md-6 col-lg-5">
-                
-                <table>
-                    <tr>
-                        <td>Username: </td>
-                        <td>dooyong</td>
-                    </tr>
-                    <tr>
-                        <td>First name</td>
-                        <td>Dooyong</td>
-                    </tr>
-                    <tr>
-                        <td>Last name</td>
-                        <td>Balderama</td>
-                    </tr>
-                    <tr>
-                        <td>Gender</td>
-                        <td>Male</td>
-                    </tr>
-                    <tr>
-                        <td>Birthdate</td>
-                        <td>2000-11-03</td>
-                    </tr>
-                    <tr>
-                        <td>Location</td>
-                        <td>Toronto, Canada</td>
-                    </tr>
-                    <tr>
-                        <td>Picture</td>
-                        <td><img src="" alt="" srcset=""></td>
-                    </tr>
-                </table>
-                <p>Would you like to <a href="edit-profile.php">Edit your profile</a></p>
-            </div>
-        </div> -->
+    
 
   </div>
 

@@ -1,3 +1,8 @@
+<?php
+    require_once("connectvars.php");
+    require_once("appvar.php");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,7 +18,7 @@
   <div class="container">
     <h2>Lets Connect - Home Page</h2>
     <?php
-    require_once("connectvars.php");
+    
     if (isset($_COOKIE['username'])) {
     ?>
       <ul class="nav nav-tabs">
@@ -33,15 +38,13 @@
 
       <?php
       $dbc = mysqli_connect(host, user, pwd, database) or die("couldn't connect to database");
-      $pic = "pic";
-      $counter = 1;
       $query = "SELECT * FROM mismatch_users";
       $data = mysqli_query($dbc, $query);
 
       echo '<table>';
       while ($row = mysqli_fetch_array($data)) {
         echo '<tr>';
-        echo '<td><img src="uploads/' . $pic . $counter++ . '.jpg" alt="" srcset=""></td>';
+        echo '<td><img src="' . location . $row["picture"] . '" alt="" srcset=""></td>';
         echo '<td><a href="http://">' . $row['first_name'] . ' ' . $row['last_name'] . '</a></td>';
         echo '</tr>';
       }
@@ -51,11 +54,9 @@
       mysqli_close($dbc);
       ?>
 
-
-
-
     <?php
     } else {
+
     ?>
 
       <ul class="nav nav-tabs">
@@ -71,35 +72,24 @@
       </ul>
 
       <h3>Lastest Members</h3>
-      <table>
-        <tr>
-          <td><img src="uploads/profile.jpg" alt="" srcset=""></td>
-          <td>Aban Ajewvel</td>
-        </tr>
-        <tr>
-          <td><img src="uploads/profile.jpg" alt="" srcset=""></td>
-          <td>Jesuitas Linda Rose</td>
-        </tr>
-        <tr>
-          <td><img src="uploads/profile.jpg" alt="" srcset=""></td>
-          <td>Catambay Lemuel</td>
-        </tr>
-        <tr>
-          <td><img src="uploads/profile.jpg" alt="" srcset=""></td>
-          <td>Berdan Maria Nita</td>
-        </tr>
-        <tr>
-          <td><img src="uploads/profile.jpg" alt="" srcset=""></td>
-          <td>Magwili Heicel Kim</td>
-        </tr>
-        <tr>
-          <td><img src="uploads/profile.jpg" alt="" srcset=""></td>
-          <td>Nuelan Felix</td>
-        </tr>
-      </table>
-
 
     <?php
+      $dbc = mysqli_connect(host, user, pwd, database) or die("couldn't connect to database");
+      $query = "SELECT * FROM mismatch_users";
+      $data = mysqli_query($dbc, $query);
+
+      echo '<table>';
+      while ($row = mysqli_fetch_array($data)) {
+        echo '<tr>';
+        echo '<td><img src="'  . location . $row["picture"] .  '" alt="" srcset=""></td>';
+        echo '<td>' . $row['first_name'] . ' ' . $row['last_name'] . '</td>';
+        echo '</tr>';
+      }
+
+      echo '</table>';
+
+      mysqli_close($dbc);
+
     }
     ?>
 
@@ -114,8 +104,3 @@
 
 </html>
 
-<!-- 
-
-INSERT INTO `mismatch_user`(`username`, `password`, `join_date`, `f_name`, `l_name`, `gender`, `birthday`, `city`, `state`, `picture`) VALUES ("KristelleTulania", SHA('2'), NOW(), "Kistelle", "Ann Tulania", "F", "2001-4-11", "Cainta", "rizal", "pic2.jpg");
-
--->

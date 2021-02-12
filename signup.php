@@ -98,14 +98,6 @@
 ?>    
 
 
-
-
-<!-- <div class="row"></div>
-
-<div class="col-12 col-md-6 col-lg-5">
-
-</div> -->
-
     
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.bundle.min.js"></script>
