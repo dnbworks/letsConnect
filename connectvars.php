@@ -3,4 +3,4 @@
 define("host", "localhost");
 define("user", "root");
 define("database", "mismatch");
-define("pwd", "");
+define("pwd", "hfhpbqX4w7dKPE16");

@@ -38,7 +38,7 @@
 
       <?php
       $dbc = mysqli_connect(host, user, pwd, database) or die("couldn't connect to database");
-      $query = "SELECT * FROM mismatch_user";
+      $query = "SELECT * FROM mismatch_users ORDER BY join_date DESC";
       $data = mysqli_query($dbc, $query);
 
       echo '<table>';
@@ -49,7 +49,7 @@
         } else {
           echo "<td><img src='" . location . "profile.jpg" . "'></td>";
         }
-        echo '<td><a href="http://">' . $row['f_name'] . ' ' . $row['l_name'] . '</a></td>';
+        echo '<td>' . $row['first_name'] . ' ' . $row['last_name'] . '</td>';
         echo '</tr>';
 
       }
@@ -80,7 +80,7 @@
 
     <?php
       $dbc = mysqli_connect(host, user, pwd, database) or die("couldn't connect to database");
-      $query = "SELECT * FROM mismatch_user";
+      $query = "SELECT * FROM mismatch_users ORDER BY join_date DESC";
       $data = mysqli_query($dbc, $query);
 
       echo '<table>';
@@ -91,7 +91,7 @@
         } else {
           echo "<td><img src='" . location . "profile.jpg" . "'></td>";
         }
-        echo '<td>' . $row['f_name'] . ' ' . $row['l_name'] . '</td>';
+        echo '<td>' . $row['first_name'] . ' ' . $row['last_name'] . '</td>';
         echo '</tr>';
       }
 
