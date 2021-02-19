@@ -27,7 +27,7 @@
           <a href="edit-profile.php" class="nav-link">Edit Profile</a>
         </li>
         <li class="nav-item">
-          <a href="logout.php" class="nav-link">Log out <?php echo $_COOKIE['user_id'] ?> </a>
+          <a href="logout.php" class="nav-link">Log out <?php echo $_COOKIE['username'] ?> </a>
         </li>
       </ul>
 
