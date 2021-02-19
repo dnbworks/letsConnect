@@ -12,17 +12,16 @@ if (!isset($_COOKIE['user_id'])) {
     $user_password = mysqli_real_escape_string($dbc, trim($_POST['password']));
 
     if (!empty($user_username) && !empty($user_password)) {
-      $query = "SELECT id, username FROM mismatch_user WHERE username = '$user_username' AND " .
-        "password = SHA('$user_password')";
+      $query = "SELECT user_id, username FROM mismatch_users WHERE username = '$user_username' AND " .
+                "password = SHA('$user_password')";
 
       $data = mysqli_query($dbc, $query);
 
       if (mysqli_num_rows($data) == 1) {
         $row = mysqli_fetch_array($data);
-        setcookie('user_id', $row['id']);
+        setcookie('user_id', $row['user_id']);
         setcookie('username', $row['username']);
-        $home_url = 'http://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF'] . '/index.php');
-        header('Location:' . 'http://localhost/mismatch/index.php');
+        header('Location:' . 'http://localhost/letsConnect/index.php');
       } else {
         $errormessage = "Sorry you must enter a valid username and password to login";
       }
