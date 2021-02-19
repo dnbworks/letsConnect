@@ -10,7 +10,7 @@
 <body>
 
 <?php
-    require_once("connectvars.php");
+    require_once("variables/connectvars.php");
 
     $dbc = mysqli_connect(host, user, pwd, database ) or die("couldn't connect to database");
     $form = false;
@@ -22,11 +22,11 @@
         if (!empty($username) && !empty($password1) && !empty($password2)) {
 
             if($password1 == $password2){
-                $query = "SELECT * FROM mismatch_user WHERE username = '$username'";
+                $query = "SELECT * FROM mismatch_users WHERE username = '$username'";
                 $data = mysqli_query($dbc, $query);
 
                 if (mysqli_num_rows($data) == 0) {
-                    $queryInsert = "INSERT INTO mismatch_user (username, password, join_date) VALUES" .
+                    $queryInsert = "INSERT INTO mismatch_users (username, password, join_date) VALUES" .
                     "('$username', SHA('$password1'), NOW())";
                     mysqli_query($dbc, $queryInsert);
                     echo "<p>Your new account has been successfully created, You're now ready to login and <a href='edit-profile.php'>edit your profile</a></p>";

@@ -1,6 +1,6 @@
 <?php
-   require_once("connectvars.php"); 
-   require_once("appvar.php");
+   require_once("variables/connectvars.php"); 
+   require_once("variables/appvar.php");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,7 +16,16 @@
     <div class="container">
         <h2>Mismatch - Edit Profile</h2>
         <?php
-          if(isset($_COOKIE['username'])){
+          session_start();
+
+        // update session if users closes the browser without loging out
+        if (!isset($_SESSION['user_id'])) {
+          if (isset($_COOKIE['user_id']) && isset($_COOKIE['username'])) {
+              $_SESSION['user_id'] = $_COOKIE['user_id'];
+              $_SESSION['username'] = $_COOKIE['username'];
+          }
+        } 
+          if(isset($_SESSION['username'])){
         ?> 
         <ul class="nav nav-tabs">
           <li class="nav-item">
@@ -29,7 +38,7 @@
             <a href="edit-profile.php" class="nav-link active">Edit Profile <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a href="logout.php" class="nav-link">Log out <?php echo $_COOKIE['username'] ?> </a>
+            <a href="logout.php" class="nav-link">Log out <?php echo $_SESSION['username']; ?> </a>
           </li>
         </ul>
 
@@ -98,7 +107,7 @@ if(in_array($ActualFormat, $allowed)){
               $query = "UPDATE `mismatch_users` SET `first_name`= '$firstname',`last_name`= '$lastname', `gender`= '$gender', `birthdate`= '$birthdate', `city`= '$city',`state`= '$state', `picture`= '$actualimage' WHERE user_id = '$useridCookie'";
               $result = mysqli_query($dbc, $query) or die ("error");
 
-              header('Location:' . 'http://localhost/mismatch/view-profile.php');
+              header('Location:' . 'http://localhost/letsConnect/view-profile.php');
 
               mysqli_close($dbc);
           } else {

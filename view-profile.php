@@ -14,7 +14,18 @@
   <div class="container">
     <h2>Lets Connect - View Profile</h2>
     <?php
-    if (isset($_COOKIE['username'])) {
+
+    session_start();
+
+    // update session if users closes the browser without loging out
+    if (!isset($_SESSION['user_id'])) {
+      if (isset($_COOKIE['user_id']) && isset($_COOKIE['username'])) {
+          $_SESSION['user_id'] = $_COOKIE['user_id'];
+          $_SESSION['username'] = $_COOKIE['username'];
+      }
+    } 
+    
+    if (isset($_SESSION['username'])) {
     ?>
       <ul class="nav nav-tabs">
         <li class="nav-item">
@@ -27,7 +38,7 @@
           <a href="edit-profile.php" class="nav-link">Edit Profile</a>
         </li>
         <li class="nav-item">
-          <a href="logout.php" class="nav-link">Log out <?php echo $_COOKIE['username'] ?> </a>
+          <a href="logout.php" class="nav-link">Log out <?php echo $_SESSION['username']; ?> </a>
         </li>
       </ul>
 
@@ -55,10 +66,10 @@
     ?>
 
     <?php
-    require_once("connectvars.php");
+    require_once("variables/connectvars.php");
 
     $dbc = mysqli_connect(host, user, pwd, database) or die("couldn't connect to database");
-    $user_idCookie = $_COOKIE['user_id'];
+    $user_idCookie = $_SESSION['user_id'] ;
 
     $query = "SELECT * FROM mismatch_users WHERE user_id = '$user_idCookie'";
     $data = mysqli_query($dbc, $query);
@@ -113,13 +124,7 @@
     <p>Would you like to <a href="edit-profile.php">Edit your profile</a></p>
 
 
-    
-
   </div>
-
-
-
-
 
   <script src="/js/jquery.min.js"></script>
   <script src="/js/bootstrap.bundle.min.js"></script>

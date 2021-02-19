@@ -1,6 +1,6 @@
 <?php
-    require_once("connectvars.php");
-    require_once("appvar.php");
+    require_once("variables/connectvars.php");
+    require_once("variables/appvar.php");
 ?>
 
 <!DOCTYPE html>
@@ -18,8 +18,18 @@
   <div class="container">
     <h2>Lets Connect - Home Page</h2>
     <?php
+
+    session_start();
+
+    // update session if users closes the browser without loging out
+    if (!isset($_SESSION['user_id'])) {
+      if (isset($_COOKIE['user_id']) && isset($_COOKIE['username'])) {
+          $_SESSION['user_id'] = $_COOKIE['user_id'];
+          $_SESSION['username'] = $_COOKIE['username'];
+      }
+    } 
     
-    if (isset($_COOKIE['username'])) {
+    if (isset($_SESSION['username'])) {
     ?>
       <ul class="nav nav-tabs">
         <li class="nav-item">
@@ -32,7 +42,7 @@
           <a href="edit-profile.php" class="nav-link">Edit Profile</a>
         </li>
         <li class="nav-item">
-          <a href="logout.php" class="nav-link">Log out <?php echo $_COOKIE['username'] ?> </a>
+          <a href="logout.php" class="nav-link">Log out <?php echo $_SESSION['username']; ?> </a>
         </li>
       </ul>
 
@@ -49,7 +59,7 @@
         } else {
           echo "<td><img src='" . location . "profile.jpg" . "'></td>";
         }
-        echo '<td>' . $row['first_name'] . ' ' . $row['last_name'] . '</td>';
+        echo '<td><a href="">' . $row['first_name'] . ' ' . $row['last_name'] . '</a></td>';
         echo '</tr>';
 
       }
