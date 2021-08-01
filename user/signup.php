@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lets Connect - Sign Up</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/styles.css">
+    <title>letsConnect - Sign Up</title>
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/styles.css">
 </head>
 <body>
 
 <?php
-    require_once("variables/connectvars.php");
+    require_once("../functions/connectvars.php");
 
     $dbc = mysqli_connect(host, user, pwd, database ) or die("couldn't connect to database");
     $form = false;
@@ -29,7 +29,7 @@
                     $queryInsert = "INSERT INTO mismatch_users (username, password, join_date) VALUES" .
                     "('$username', SHA('$password1'), NOW())";
                     mysqli_query($dbc, $queryInsert);
-                    echo "<p>Your new account has been successfully created, You're now ready to login and <a href='edit-profile.php'>edit your profile</a></p>";
+                    echo "<p>Your new account has been successfully created, You're now ready to login and <a href='login.php'>edit your profile</a></p>";
                     mysqli_close($dbc);
                 } else {
                     echo '<div class="container">
@@ -58,8 +58,8 @@
     <div class="container mt">
         <div class="row justify-content-center">
             <div class="col-12 col-md-6 col-lg-5">
-                <h2>Lets Connect - Sign Up</h2>
-                <p>Please enter your username and desired password to sign up to lets Connect</p>
+                <h2>lets connect - Sign Up</h2>
+                <p>Please enter your username and desired password to sign up to Mismatch</p>
                 <form method="POST" action="<?php echo $_SERVER['PHP_SELF'];  ?>" id="form" novalidate class="needs-validation">
                     <div class="form-group">
                         <label for="username">Username or Email</label>
@@ -96,7 +96,6 @@
 <?php
 }
 ?>    
-
 
     
 <script src="/js/jquery.min.js"></script>

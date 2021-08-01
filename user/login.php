@@ -1,5 +1,5 @@
 <?php
-require_once("variables/connectvars.php");
+    require_once("../functions/connectvars.php");
     
     $errormessage = "";
 
@@ -40,62 +40,62 @@ require_once("variables/connectvars.php");
 
 ?>
 
-?>
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="css/bootstrap.min.css">
-  <title>Lets Connect - login</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+  
+    <title>Mismatch - login</title>
+
 </head>
-
 <body>
-  <div class="container mt">
-    <h2>Lets Connect - login</h2>
-    <?php
-    if (isset($_COOKIE['username'])) {
-    ?>
-      <ul class="nav nav-tabs">
-        <li class="nav-item">
-          <a href="index.php" class="nav-link">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a href="view-profile.php" class="nav-link">View Profile</a>
-        </li>
-        <li class="nav-item">
-          <a href="edit-profile.php" class="nav-link">Edit Profile</a>
-        </li>
-        <li class="nav-item">
-          <a href="logout.php" class="nav-link active">Log out <?php echo $_COOKIE['username'] ?> <span class="sr-only">(current)</span></a>
-        </li>
-      </ul>
+<div class="container mt">
 
-    <?php
-    } else {
-    ?>
+  <h2>lets connect - login</h2>
+<?php
+          if(isset($_SESSION['username'])){
+        ?> 
+          <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a href="../index.php" class="nav-link">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a href="view-profile.php" class="nav-link">View Profile</a>
+            </li>
+            <li class="nav-item">
+              <a href="edit-profile.php" class="nav-link">Edit Profile</a>
+            </li>
+            <li class="nav-item">
+              <a href="logout.php" class="nav-link active">Log out <?php echo $_SESSION['username'] ?> <span class="sr-only">(current)</span></a>
+            </li>
+          </ul>
 
-      <ul class="nav nav-tabs">
-        <li class="nav-item">
-          <a href="index.php" class="nav-link ">Home </a>
-        </li>
-        <li class="nav-item">
-          <a href="signup.php" class="nav-link">Sign Up</a>
-        </li>
-        <li class="nav-item">
-          <a href="login.php" class="nav-link active">Log In <span class="sr-only">(current)</span></a>
-        </li>
-      </ul>
-
-
-    <?php
-    }
-    ?>
-    <div class="row">
-      <div class="col-12 col-md-6 col-lg-5">
         <?php
+      } else {
+        ?> 
+
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a href="../index.php" class="nav-link ">Home </a>
+    </li>
+    <li class="nav-item">
+      <a href="signup.php" class="nav-link">Sign Up</a>
+    </li>
+    <li class="nav-item">
+      <a href="login.php" class="nav-link active">Log In <span class="sr-only">(current)</span></a>
+    </li>
+  </ul>
+
+      
+<?php
+}
+?>  
+        <div class="row">
+            <div class="col-12 col-md-6 col-lg-5">
+            <?php
                 if (empty($_SESSION['username'])) {
                   if ($errormessage !== "") {
                     echo '<div class="alert alert-danger" role="alert">' . $errormessage . '</div>';   
@@ -132,13 +132,12 @@ require_once("variables/connectvars.php");
                     }
                 
                 ?>
-      </div>
-    </div>
-  </div>
+            </div>
+        </div>
+</div>
 
 
-  <script src="/js/jquery.min.js"></script>
-  <script src="/js/bootstrap.bundle.min.js"></script>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

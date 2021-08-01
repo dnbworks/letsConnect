@@ -1,73 +1,60 @@
 <?php
-   require_once("variables/connectvars.php"); 
-   require_once("variables/appvar.php");
+   require_once("../functions/startsession.php");
+
+   $pagetitle = 'Edit Profile';
+   $pageIndex = 3;
+
+   require_once("../partials/header.php");
+
+   require_once("../functions/connectvars.php"); 
+   require_once("../functions/appvar.php");
+
+   require_once("../partials/navmenu.php");
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mismatch - Edit Profile</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
+
     
-    <div class="container">
-        <h2>Mismatch - Edit Profile</h2>
-        <?php
-          session_start();
+<?php
 
-        // update session if users closes the browser without loging out
-        if (!isset($_SESSION['user_id'])) {
-          if (isset($_COOKIE['user_id']) && isset($_COOKIE['username'])) {
-              $_SESSION['user_id'] = $_COOKIE['user_id'];
-              $_SESSION['username'] = $_COOKIE['username'];
-          }
-        } 
-          if(isset($_SESSION['username'])){
-        ?> 
-        <ul class="nav nav-tabs">
-          <li class="nav-item">
-            <a href="index.php" class="nav-link">Home </a>
-          </li>
-          <li class="nav-item">
-            <a href="view-profile.php" class="nav-link">View Profile</a>
-          </li>
-          <li class="nav-item">
-            <a href="edit-profile.php" class="nav-link active">Edit Profile <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a href="logout.php" class="nav-link">Log out <?php echo $_SESSION['username']; ?> </a>
-          </li>
-        </ul>
+if (!isset($_SESSION['user_id'])) {
+  echo '<p class="login">Please <a href="login.php">log in</a> to access this page.</p>';
+  exit();
+  }
+  else {
+  echo('<p class="login">You are logged in as ' . $_SESSION['username'] .
+  '. <a href="logout.php">Log out</a>.</p>');
+    
+    require_once("../functions/connectvars.php");
 
-        <?php
-      } else {
-        ?> 
+    $dbc = mysqli_connect(host, user, pwd, database ) or die("couldn't connect to database");
+    $user_idSession = $_SESSION['user_id'];
 
-      <ul class="nav nav-tabs">
-          <li class="nav-item">
-            <a href="index.php" class="nav-link active">Home <span class="sr-only">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a href="signup.php" class="nav-link">Sign Up</a>
-          </li>
-          <li class="nav-item">
-            <a href="login.php" class="nav-link">Log In</a>
-          </li>
-      </ul>
+    $query = "SELECT * FROM mismatch_users WHERE user_id = '$user_idSession'";
+    $data = mysqli_query($dbc, $query);
 
+    if (mysqli_num_rows($data) == 1) {
+      $row = mysqli_fetch_array($data);
+
+      $fname = $row["first_name"];
+      $lname = $row["last_name"];
+      $birthdate = $row["birthdate"];
+      $city = $row["city"];
+      $state = $row["state"];
+      $picture = $row["picture"];
+
+      $dateArray = explode("-", $birthdate);
+
+    
       
-<?php
-}
-?>
-
-<?php
+      
+    }
+    mysqli_close($dbc);
+  } 
 
 if(ISSET($_POST['submit'])){
-  $dbc = mysqli_connect(host, user, pwd, database ) or die("couldn't connect to database");
 
+$dbc = mysqli_connect(host, user, pwd, database ) or die("couldn't connect to database");
+
+$picture = $_FILES['file'];
 $firstname = mysqli_real_escape_string($dbc, trim($_POST['firstname']));
 $lastname = mysqli_real_escape_string($dbc, trim($_POST['lastname']));
 $gender = $_POST['Gender'];
@@ -77,21 +64,21 @@ $year = $_POST['year'];
 $city =  mysqli_real_escape_string($dbc, trim($_POST['city']));
 $state =  mysqli_real_escape_string($dbc, trim($_POST['state']));
 
-$picture = $_FILES['pic']['name'];
 
+$picname = $_FILES['file']['name'];
+$pictype = $_FILES['file']['type'];
+$picsize = $_FILES['file']['size'];
+$piclocation = $_FILES['file']['tmp_name'];
+$picerror = $_FILES['file']['error'];
 
 
 
 if((!empty($firstname)) && (!empty($lastname)) && (!empty($gender)) && (!empty($day)) && (!empty($month)) && (!empty($year)) && (!empty($city)) && (!empty($state)) && (!empty($picture)) ){ 
 
-$birthdate = $year . $month . $day;
-$useridCookie = $_COOKIE['username'];
+$birthdate = $year . "-" . $month . "-" . $day;
+$useridCookie = $_SESSION['user_id'];
 
-$picname = $_FILES['pic']['name'];
-$pictype = $_FILES['pic']['type'];
-$picsize = $_FILES['pic']['size'];
-$piclocation = $_FILES['pic']['tmp_name'];
-$picerror = $_FILES['pic']['error'];
+
 
 $allowed = array("jpeg", "jpg", "png");
 $Actual = explode("/", $pictype);
@@ -102,12 +89,14 @@ if(in_array($ActualFormat, $allowed)){
       if($picerror === 0){
           $actualimage = time() . $picname;
           $actualLocation  = location . $actualimage;
-          if(move_uploaded_file($screenshotlocation, $actualLocation)){
+          if(move_uploaded_file($piclocation, $actualLocation)){
 
               $query = "UPDATE `mismatch_users` SET `first_name`= '$firstname',`last_name`= '$lastname', `gender`= '$gender', `birthdate`= '$birthdate', `city`= '$city',`state`= '$state', `picture`= '$actualimage' WHERE user_id = '$useridCookie'";
               $result = mysqli_query($dbc, $query) or die ("error");
 
-              header('Location:' . 'http://localhost/letsConnect/view-profile.php');
+
+               header('Location:' . 'http://localhost/letsConnect/user/view-profile.php');
+
 
               mysqli_close($dbc);
           } else {
@@ -134,16 +123,15 @@ if(in_array($ActualFormat, $allowed)){
 
 ?>  
 
-
-  <div class="row">
+<div class="row">
       <div class="col-12 col-md-8 col-lg-6"> 
-          <form method="POST" action="<?php echo $_SERVER['PHP_SELF'];  ?>">
+          <form method="POST" action="<?php echo $_SERVER['PHP_SELF'];  ?>" enctype="multipart/form-data">
               <div class="row">
                   <div class="col">
                       <div class="form-group">
                           <label for="firstname">First name</label>
                           <div>
-                              <input type="text" class="form-control" id="firstname" placeholder="First name" name="firstname" required>
+                              <input type="text" class="form-control" id="firstname" placeholder="First name" name="firstname" value="<?php echo $fname; ?>" required>
                           </div>
                       </div>
                   </div> 
@@ -151,7 +139,7 @@ if(in_array($ActualFormat, $allowed)){
                       <div class="form-group">
                           <label for="lastname">Last name</label>
                           <div>
-                              <input type="text" class="form-control" id="lastname" placeholder="Last name" name="lastname" required>
+                              <input type="text" class="form-control" id="lastname" placeholder="Last name" name="lastname" value="<?php echo $lname; ?>" required>
                           </div>
                       </div>
                   </div> 
@@ -169,7 +157,7 @@ if(in_array($ActualFormat, $allowed)){
               <div class="row">
                   <div class="form-group col-4">
                       <select class="form-control" id="birthdayDay" name="day" required >
-                          <option vaule="ee" selected hidden>Day</option>
+                          <option value="<?php if (!empty($dateArray[2])) echo $dateArray[2]; ?>" selected hidden>Day</option>
                           <option value="1">1</option>
                           <option value="2">2</option>
                           <option value="3">3</option>
@@ -206,7 +194,7 @@ if(in_array($ActualFormat, $allowed)){
                   <div class="form-group col-4">
                       <label for="birthdayMonth" class="sr-only">Birthday month</label>
                       <select class="form-control" id="birthdayMonth" name="month" required>
-                        <option value="" selected hidden>Month</option>
+                        <option value="<?php if (!empty($dateArray[1])) echo $dateArray[1]; ?>" selected hidden>Month</option>
                         <option value="01">January</option>
                         <option value="02">February</option>
                         <option value="03">March</option>
@@ -224,7 +212,7 @@ if(in_array($ActualFormat, $allowed)){
                     <div class="form-group col-4">
                       <label for="birthdayYear" class="sr-only">Birthday year</label>
                       <select class="form-control" id="birthdayYear" name="year" required>
-                        <option value="" selected hidden>Year</option>
+                        <option value="<?php if (!empty($dateArray[0])) echo $dateArray[0]; ?>" selected hidden>Year</option>
                         <option value="1980">1980</option>
                         <option value="1981">1981</option>
                         <option value="1982">1982</option>
@@ -256,7 +244,7 @@ if(in_array($ActualFormat, $allowed)){
                         <div class="form-group">
                             <label for="city">City</label>
                             <div>
-                                <input type="text" class="form-control" id="city" placeholder="City" name="city" required>
+                                <input type="text" class="form-control" id="city" placeholder="City" name="city" value="<?php echo $city; ?>" required>
                             </div>
                         </div>
                   </div> 
@@ -264,15 +252,15 @@ if(in_array($ActualFormat, $allowed)){
                         <div class="form-group">
                             <label for="state">State</label>
                             <div>
-                                <input type="text" class="form-control" id="state" placeholder="State" name="state" required> 
+                                <input type="text" class="form-control" id="state" placeholder="State" name="state" value="<?php echo $state; ?>" required> 
                             </div>
                         </div>
                   </div> 
                 </div>
                 <div class="form-group">
                   <div class="custom-file">
-                    <input type="file" id="example-file-custom-button" class="custom-file-input" name="pic" required>
-                    <label class="custom-file-label" for="example-file-custom-button" data-browse="Select file">Custom file browser</label>
+                    <input type="file" id="example-file-custom-button" class="custom-file-input" name="file" value="<?php echo location . $picture; ?>" >
+                    <label class="custom-file-label" for="example-file-custom-button" data-browse="Select file" >Custom file browser</label>
                   </div>
                 </div>
 
@@ -284,9 +272,12 @@ if(in_array($ActualFormat, $allowed)){
           </form>
       </div>
   </div>
-</div>
+
 
     <script src="/js/jquery.min.js"></script>
     <script src="/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+
+<?php
+  require_once("../partials/footer.php");
+?>
+ 
