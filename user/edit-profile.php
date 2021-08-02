@@ -264,6 +264,8 @@ if(in_array($ActualFormat, $allowed)){
                   </div>
                 </div>
 
+                <img src="<?php echo location . $picture; ?>" alt="" srcset="">
+
               <div class="form-group">
                   <div>
                       <button type="submit" class="btn btn-primary" name="submit">Save Profile</button>

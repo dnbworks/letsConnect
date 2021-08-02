@@ -59,39 +59,40 @@ if(isset($_POST['submit'])) {
 
 // query to select response for generation data-driven form
 
-$querySelct = "SELECT `response_id`, `topic_id`, `response` FROM `mismatch_response` WHERE `user_id` = '" . $_SESSION["user_id"] . "'";
+// $querySelct = "SELECT `response_id`, `topic_id`, `response` FROM `mismatch_response` WHERE `user_id` = '" . $_SESSION["user_id"] . "'";
 
-$data1 = mysqli_query($dbc, $querySelct);
+$query_response = "SELECT mr.response_id, mr.topic_id, mr.response, mt.name AS topic_name, mc.name AS topic_category FROM mismatch_response AS mr INNER JOIN mismatch_topic AS mt USING(topic_id) INNER JOIN mismatch_category AS mc USING(category_id) WHERE mr.user_id ='" . $_SESSION['user_id'] . "'";
+
+$data1 = mysqli_query($dbc, $query_response);
 
 $responses = array();
 
 while($rows = mysqli_fetch_array($data1)){
     // look up for the topic name for the response from the topic table 
-    $query2 = "SELECT `name`, `category_id` FROM `mismatch_topic` WHERE `topic_id` =  '" . $rows["topic_id"] . "'";
-
+    // $query2 = "SELECT `name`, `category_id` FROM `mismatch_topic` WHERE `topic_id` =  '" . $rows["topic_id"] . "'";
 
     
-    $data2 = mysqli_query($dbc, $query2);
+    // $data2 = mysqli_query($dbc, $query2);
 
-    if(mysqli_num_rows($data2) == 1 ){
-        $row2 = mysqli_fetch_array($data2);
-        $rows["topic_name"] = $row2["name"];
+    // if(mysqli_num_rows($data2) == 1 ){
+    //     $row2 = mysqli_fetch_array($data2);
+    //     $rows["topic_name"] = $row2["name"];
    
 
         // look up the category name for the topic from the category table
 
-        $query3 = "SELECT name FROM mismatch_category WHERE category_id = '" . $row2["category_id"] . "'";
-        $data3 = mysqli_query($dbc, $query3);
+        // $query3 = "SELECT name FROM mismatch_category WHERE category_id = '" . $row2["category_id"] . "'";
+        // $data3 = mysqli_query($dbc, $query3);
 
-        if(mysqli_num_rows($data3) == 1){
-            $row3 = mysqli_fetch_array($data3);
-            $rows["topic_category"] = $row3["name"];
-        }
+        // if(mysqli_num_rows($data3) == 1){
+        //     $row3 = mysqli_fetch_array($data3);
+        //     $rows["topic_category"] = $row3["name"];
+        // }
         
         array_push($responses, $rows);
         
        
-    }
+    // }
 
 }
 
@@ -119,12 +120,14 @@ foreach($responses as $resonse){
     echo '</div>';   
     echo '<div class="col-2">';
         echo '<input type="radio" name="' . $resonse["response_id"] . '" id="' .$resonse["topic_name"] . '" value="1"  ' . ($resonse['response'] == 1 ? 'checked="checked"' : '' ) . '>Love';
-        echo '<input type="radio" name="' . $resonse["response_id"] . '" id="' .$resonse["topic_name"] . '" value="1"  ' . ($resonse['response'] == 2 ? 'checked="checked"' : '' ) . '>Hate';
+        echo '<input type="radio" name="' . $resonse["response_id"] . '" id="' .$resonse["topic_name"] . '" value="2"  ' . ($resonse['response'] == 2 ? 'checked="checked"' : '' ) . '>Hate';
     echo '</div>';
     echo '</div>';
 
 
    
+
+    
 
     // tenary operator
     

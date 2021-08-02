@@ -106,7 +106,7 @@
                     <div class="form-group">
                         <label for="username">Username</label>
                         <div>
-                            <input type="text" class="form-control" id="username" placeholder="Username" name="username" value="<?php if (!empty($username)) echo $username;   ?>" required>
+                            <input type="text" class="form-control" id="username" placeholder="Username" name="username" value="<?php if (!empty($user_username)) echo $user_username;   ?>" required>
                             <p class="valid-feedback">correct</p>
                             <p class="invalid-feedback">You forgot to fill in the username input</p>
                         </div>
