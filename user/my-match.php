@@ -3,11 +3,19 @@
 require_once("../functions/startsession.php");
 
 require_once("../functions/connectvars.php"); 
+require_once("../functions/appvar.php");
+
+$pagetitle = ' My match!';
+$pageIndex = 5;
+
+require_once("../partials/header.php");
 
 if(!isset($_SESSION['user_id'])) {
     echo '<p class="login">Please <a href="login.php"> Login</a> to access this page</p>';
     exit();
 }
+
+require_once("../partials/navmenu.php");
 
 $dbc = mysqli_connect(host, user, pwd, database ) or die("couldn't connect to database");
 
@@ -52,11 +60,12 @@ if(mysqli_num_rows($data) != 0){
     
       
         $data3 = mysqli_query($dbc,  $query3);
-        var_dump($data3);
+        // var_dump($data3);
 
         $mismatch_responses = array();
 
         while($row3 = mysqli_fetch_array($data3)){
+            // echo $row3['user_id'];
             array_push($mismatch_responses, $row3);
         }
 
@@ -65,7 +74,7 @@ if(mysqli_num_rows($data) != 0){
 
         // var_dump($row3);
 
-    /*
+    
         for ($i=0; $i < count($user_responses); $i++) { 
             if(((int)$user_responses[$i]['response'] + (int)$mismatch_responses[$i]['response']) == 3){
                 $score += 1;
@@ -81,15 +90,15 @@ if(mysqli_num_rows($data) != 0){
 
             $mismatch_score = $score;
 
-            $mismatch_user_id = $row3['user_id'];
+            $mismatch_user_id = $row2['user_id'];
             $mismatch_topics = array_slice($topics, 0);
 
         }
 
-        */
+        
         
     }
-    /*
+    
 
     if($mismatch_user_id != 1){
         $query = "SELECT username, first_name, last_name, city, state, picture FROM mismatch_users WHERE user_id = '$mismatch_user_id'";
@@ -103,7 +112,7 @@ if(mysqli_num_rows($data) != 0){
             echo '<div class="container">';
             echo '<div class="row">';
             echo '<div class="col-12 col-md-6 col-lg-6">';
-            echo '<div class="d-flex">';
+            echo '<div class="d-flex align-items-center">';
 
             echo '<div>';
             echo '<p>' . $row['first_name'] . ' ' . $row['last_name']  .'</p>';
@@ -112,7 +121,7 @@ if(mysqli_num_rows($data) != 0){
 
 
             echo '<div>';
-            echo '<img src="' . $row['picture'] . '" alt="profile" width="100px"/>';
+            echo '<img src="' . location . $row['picture'] . '" alt="profile" width="100px"/>';
             echo '</div>';
 
             echo '</div>';
@@ -120,16 +129,21 @@ if(mysqli_num_rows($data) != 0){
             echo '</div>';
             echo '</div>';
 
+        } else {
+            echo 'none';
         }
 
     }
 
-*/
+
 
 
 
     
 }
+
+
+require_once("../partials/footer.php");
 
 
 
