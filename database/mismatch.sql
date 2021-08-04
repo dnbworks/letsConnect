@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 31, 2021 at 09:25 PM
+-- Generation Time: Aug 03, 2021 at 06:23 PM
 -- Server version: 10.4.20-MariaDB
 -- PHP Version: 8.0.8
 
@@ -51,7 +51,7 @@ INSERT INTO `mismatch_category` (`category_id`, `name`) VALUES
 
 CREATE TABLE `mismatch_response` (
   `response_id` int(11) NOT NULL,
-  `response` varchar(4) DEFAULT NULL,
+  `response` varchar(4) DEFAULT '0',
   `user_id` int(11) DEFAULT NULL,
   `topic_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -120,13 +120,6 @@ CREATE TABLE `mismatch_users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `mismatch_users`
---
-
-INSERT INTO `mismatch_users` (`user_id`, `username`, `password`, `join_date`, `first_name`, `last_name`, `gender`, `birthdate`, `city`, `state`, `picture`) VALUES
-(1, 'mickley@gmail.com', '7110eda4d09e062aa5e4a390b0a572ac0d2c0220', '2021-07-31 18:59:28', 'micky', 'peter', 'F', '1997-04-16', 'Tanay', 'NY', '1627757968google.png');
-
---
 -- Indexes for dumped tables
 --
 
@@ -140,9 +133,7 @@ ALTER TABLE `mismatch_category`
 -- Indexes for table `mismatch_response`
 --
 ALTER TABLE `mismatch_response`
-  ADD PRIMARY KEY (`response_id`),
-  ADD KEY `fk_mismatch_response_user_id` (`user_id`),
-  ADD KEY `fk_mismatch_response_topic_id` (`topic_id`);
+  ADD PRIMARY KEY (`response_id`);
 
 --
 -- Indexes for table `mismatch_topic`
@@ -183,18 +174,11 @@ ALTER TABLE `mismatch_topic`
 -- AUTO_INCREMENT for table `mismatch_users`
 --
 ALTER TABLE `mismatch_users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `mismatch_response`
---
-ALTER TABLE `mismatch_response`
-  ADD CONSTRAINT `fk_mismatch_response_topic_id` FOREIGN KEY (`topic_id`) REFERENCES `mismatch_topic` (`topic_id`),
-  ADD CONSTRAINT `fk_mismatch_response_user_id` FOREIGN KEY (`user_id`) REFERENCES `mismatch_users` (`user_id`);
 
 --
 -- Constraints for table `mismatch_topic`
