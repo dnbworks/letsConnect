@@ -6,8 +6,6 @@
 
 
    require_once("functions/connectvars.php"); 
-   // require_once("functions/appvar.php");
-
 
 
 ?>
@@ -46,6 +44,7 @@
    define("location", "uploads/");
 
    $dbc = mysqli_connect(host, user, pwd, database ) or die("couldn't connect to database");
+    
 
    $query = "SELECT * FROM mismatch_users ORDER BY join_date DESC";
 
@@ -55,9 +54,9 @@
    while($row = mysqli_fetch_array($data)){
     echo '<tr>';
     if(is_file(location . $row['picture']) && filesize(location . $row['picture']) > 0) {
-      echo '<td class="img"><img src="' . location . $row['picture'] . '" /></td>';
+      echo '<td class="img"><img src="' . location . $row['picture'] . '" width="100px" /></td>';
    } else {
-      echo "<td class='img'><img src='" . location . "profile.jpg" . "'></td>";
+      echo "<td class='img'><img width='100px' src='" . location . "profile.jpg" . "' /></td>";
    }
 
    if (isset($_SESSION['user_id'])) {

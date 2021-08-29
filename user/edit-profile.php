@@ -264,7 +264,7 @@ if(in_array($ActualFormat, $allowed)){
                   </div>
                 </div>
 
-                <img src="<?php echo location . $picture; ?>" alt="" srcset="">
+                <img src="<?php echo location . $picture; ?>" alt="" srcset="" width="100px">
 
               <div class="form-group">
                   <div>

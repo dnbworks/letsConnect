@@ -106,7 +106,7 @@ if(isset($_SESSION['user_id'])){
         <a href="./user/Questionaire.php?<?php echo SID; ?>" class="nav-link">Questionaire</a>
     </li>
     <li class="nav-item">
-        <a href="./my-match.php?<?php echo SID; ?>" class="nav-link">my match </a>
+        <a href="user/my-match.php?<?php echo SID; ?>" class="nav-link">my match </a>
     </li>
     <li class="nav-item">
         <a href="user/logout.php" class="nav-link">Log out <?php echo $_SESSION['username']; ?> </a>
