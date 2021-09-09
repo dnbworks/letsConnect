@@ -18,37 +18,9 @@
 if (!isset($_SESSION['user_id'])) {
   echo '<p class="login">Please <a href="login.php">log in</a> to access this page.</p>';
   exit();
-  }
-  else {
-  echo('<p class="login">You are logged in as ' . $_SESSION['username'] .
-  '. <a href="logout.php">Log out</a>.</p>');
-    
-    require_once("../functions/connectvars.php");
+} 
+  
 
-    $dbc = mysqli_connect(host, user, pwd, database ) or die("couldn't connect to database");
-    $user_idSession = $_SESSION['user_id'];
-
-    $query = "SELECT * FROM mismatch_users WHERE user_id = '$user_idSession'";
-    $data = mysqli_query($dbc, $query);
-
-    if (mysqli_num_rows($data) == 1) {
-      $row = mysqli_fetch_array($data);
-
-      $fname = $row["first_name"];
-      $lname = $row["last_name"];
-      $birthdate = $row["birthdate"];
-      $city = $row["city"];
-      $state = $row["state"];
-      $picture = $row["picture"];
-
-      $dateArray = explode("-", $birthdate);
-
-    
-      
-      
-    }
-    mysqli_close($dbc);
-  } 
 
 if(ISSET($_POST['submit'])){
 
@@ -57,7 +29,7 @@ $dbc = mysqli_connect(host, user, pwd, database ) or die("couldn't connect to da
 $picture = $_FILES['file'];
 $firstname = mysqli_real_escape_string($dbc, trim($_POST['firstname']));
 $lastname = mysqli_real_escape_string($dbc, trim($_POST['lastname']));
-$gender = $_POST['Gender'];
+$gender = mysqli_real_escape_string($dbc, trim($_POST['Gender']));
 $day = $_POST['day'];
 $month = $_POST['month'];
 $year = $_POST['year'];
@@ -73,53 +45,95 @@ $picerror = $_FILES['file']['error'];
 
 
 
-if((!empty($firstname)) && (!empty($lastname)) && (!empty($gender)) && (!empty($day)) && (!empty($month)) && (!empty($year)) && (!empty($city)) && (!empty($state)) && (!empty($picture)) ){ 
+if((!empty($firstname)) && (!empty($lastname)) && (!empty($gender)) && (!empty($day)) && (!empty($month)) && (!empty($year)) && (!empty($city)) && (!empty($state)) ){ 
+    $birthdate = $year . "-" . $month . "-" . $day;
 
-$birthdate = $year . "-" . $month . "-" . $day;
-$useridCookie = $_SESSION['user_id'];
+    if ($picture && $piclocation) {
 
+        if ($picturePath) {
+            if(file_exists('../uploads/' . $picturePath)){
+                unlink('../uploads/' . $picturePath);
+            } 
+        }
+        
+        $allowed = array("jpeg", "jpg", "png");
+        $Actual = explode("/", $pictype);
+        $ActualFormat = strtolower(end($Actual));
 
+        if(in_array($ActualFormat, $allowed)){
+            if($picsize < 1000000){
+                if($picerror === 0){
+                    $actualimage = time() . $picname;
+                    $actualLocation  = location . $actualimage;
+                    if(move_uploaded_file($piclocation, $actualLocation)){
+        
+                        $query = "UPDATE `mismatch_users` SET `first_name`= '$firstname',`last_name`= '$lastname', `gender`= '$gender', `birthdate`= '$birthdate', `city`= '$city',`state`= '$state', `picture`= '$actualimage' WHERE user_id = '$useridCookie'";
 
-$allowed = array("jpeg", "jpg", "png");
-$Actual = explode("/", $pictype);
-$ActualFormat = strtolower(end($Actual));
+                    } else {
+                        
+                        echo '<p>An error occured in moving the image from a temporary folder</p>';
+                    }
+                } else {
+                    echo '<p>An error occured in uploading the image</p>';
+                }
+                
+            } else {
+                echo '<p>image is too large</p>';
+            }
+        
+            @unlink($_FILES['screenshot']['tmp_name']);
+        
+        } else {
+            echo '<p>We only accept image formats such as jpeg, jpg and png</p>';
+        }
+        
+   
+    } else {
+        $query = "UPDATE `mismatch_users` SET `first_name`= '$firstname',`last_name`= '$lastname', `gender`= '$gender', `birthdate`= '$birthdate', `city`= '$city',`state`= '$state', `picture`= '$picturePath' WHERE user_id = '$useridCookie'";
 
-if(in_array($ActualFormat, $allowed)){
-  if($picsize < 1000000){
-      if($picerror === 0){
-          $actualimage = time() . $picname;
-          $actualLocation  = location . $actualimage;
-          if(move_uploaded_file($piclocation, $actualLocation)){
+    }
 
-              $query = "UPDATE `mismatch_users` SET `first_name`= '$firstname',`last_name`= '$lastname', `gender`= '$gender', `birthdate`= '$birthdate', `city`= '$city',`state`= '$state', `picture`= '$actualimage' WHERE user_id = '$useridCookie'";
-              $result = mysqli_query($dbc, $query) or die ("error");
+    mysqli_query($dbc, $query) or die ("error");
+    mysqli_close($dbc);
 
-
-               header('Location:' . 'http://localhost/letsConnect/user/view-profile.php');
-
-
-              mysqli_close($dbc);
-          } else {
-              
-              echo '<p>An error occured in moving the image from a temporary folder</p>';
-          }
-      } else {
-          echo '<p>An error occured in uploading the image</p>';
-      }
-      
-  } else {
-      echo '<p>image is too large</p>';
-  }
-
-  @unlink($_FILES['screenshot']['tmp_name']);
+    header('Location:' . 'http://localhost/letsConnect/user/view-profile.php');
+    exit;
+    
+}
 
 } else {
-   echo '<p>We only accept image formats such as jpeg, jpg and png</p>';
+    echo('<p class="login">You are logged in as ' . $_SESSION['username'] .
+  '. <a href="logout.php">Log out</a>.</p>');
+
+    $dbc = mysqli_connect(host, user, pwd, database ) or die("couldn't connect to database");
+    $user_idSession = $_SESSION['user_id'];
+
+    $query = "SELECT * FROM mismatch_users WHERE user_id = '$user_idSession'";
+    $data = mysqli_query($dbc, $query);
+
+    if (mysqli_num_rows($data) == 1) {
+      $row = mysqli_fetch_array($data);
+      if($row != null){
+        $firstname = $row["first_name"];
+        $lastname = $row["last_name"];
+        $gender = $row["gender"];
+        $birthdate = $row["birthdate"];
+        $city = $row["city"];
+        $state = $row["state"];
+        $picturePath = $row["picture"];
+  
+        $dateArray = explode("-", $birthdate);
+
+
+      } else {
+          echo '<p>There was a problem accessing your profile.</p>';
+      }
+
+   
+    }
 }
 
-}
-
-}
+mysqli_close($dbc);
 
 ?>  
 
@@ -131,7 +145,7 @@ if(in_array($ActualFormat, $allowed)){
                       <div class="form-group">
                           <label for="firstname">First name</label>
                           <div>
-                              <input type="text" class="form-control" id="firstname" placeholder="First name" name="firstname" value="<?php echo $fname; ?>" required>
+                              <input type="text" class="form-control" id="firstname" placeholder="First name" name="firstname" value="<?php echo $firstname; ?>" required>
                           </div>
                       </div>
                   </div> 
@@ -139,7 +153,7 @@ if(in_array($ActualFormat, $allowed)){
                       <div class="form-group">
                           <label for="lastname">Last name</label>
                           <div>
-                              <input type="text" class="form-control" id="lastname" placeholder="Last name" name="lastname" value="<?php echo $lname; ?>" required>
+                              <input type="text" class="form-control" id="lastname" placeholder="Last name" name="lastname" value="<?php echo $lastname; ?>" required>
                           </div>
                       </div>
                   </div> 
@@ -259,12 +273,12 @@ if(in_array($ActualFormat, $allowed)){
                 </div>
                 <div class="form-group">
                   <div class="custom-file">
-                    <input type="file" id="example-file-custom-button" class="custom-file-input" name="file" value="<?php echo location . $picture; ?>" >
+                    <input type="file" id="example-file-custom-button" class="custom-file-input" name="file" value="" >
                     <label class="custom-file-label" for="example-file-custom-button" data-browse="Select file" >Custom file browser</label>
                   </div>
                 </div>
 
-                <img src="<?php echo location . $picture; ?>" alt="" srcset="" width="100px">
+                <img src="<?php echo location . $picturePath; ?>" alt="" srcset="" width="100px">
 
               <div class="form-group">
                   <div>

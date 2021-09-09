@@ -61,7 +61,7 @@
 
    if (isset($_SESSION['user_id'])) {
 
-    echo '<td><a href="user/view-profile.php?id='. $row['user_id'] .'&amp;username='. $row['username']. '&amp;firstname=' . $row['first_name']. '&amp;lastname='. $row['last_name'].'&amp;gender='. $row['gender'].'&amp;birthdate='. $row['birthdate']. '&amp;city='. $row['city']. '&amp;state='. $row['state']. '&amp;pic='. $row['picture']. '">' . $row['first_name'] . ' ' . $row['last_name'] . '</a></td>';
+    echo '<td><a href="user/view-profile.php?id='. $row['user_id'] .'">' . $row['first_name'] . ' ' . $row['last_name'] . '</a></td>';
 
     }
     else {

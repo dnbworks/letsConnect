@@ -19,7 +19,9 @@
   $dbc = mysqli_connect(host, user, pwd, database ) or die("couldn't connect to database");
   $user_idCookie = $_SESSION['user_id'];
 
-  $query = "SELECT * FROM mismatch_users WHERE user_id = '$user_idCookie'";
+  $user_id = $_GET['id'] ??  $user_idCookie;
+
+  $query = "SELECT * FROM mismatch_users WHERE user_id = '$user_id'";
   $data = mysqli_query($dbc, $query);
 
   if (mysqli_num_rows($data) == 1) {
@@ -68,8 +70,10 @@
   mysqli_close($dbc);
 
 ?> 
+
+<?php if($user_id == $user_idCookie): ?>
  <p>Would you like to <a href="./edit-profile.php">Edit your profile</a></p>
-      
+<?php endif; ?>   
   <script src="/js/jquery.min.js"></script>
   <script src="/js/bootstrap.bundle.min.js"></script>
 
