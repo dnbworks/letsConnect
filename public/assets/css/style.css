@@ -1,0 +1,108 @@
+
+
+.banner {
+    max-width:1080px ;
+    margin: 0 auto;
+    min-height: 60vh;
+    background-image: url('../img/banner.jpg');
+    background-position: center;
+    background-size: cover;
+    padding-bottom: 20px;
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
+
+.hero-section {
+    padding-top:30px;
+    text-align: center;
+}
+
+.hero-section p {
+    color: rgb(206, 206, 206);
+}
+nav {
+    padding: 15px 0;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+}
+ 
+nav a.logo {
+    font-size: 20px;
+    font-weight: bold; 
+    display: inline-block;
+}
+
+@media screen and (min-width:450px){
+    nav a.logo {
+        font-size: 20px;
+        font-weight: bold; 
+        margin-right: 20px;
+        
+    }
+}
+
+nav a.signin {
+    background: rgba(0, 0, 0, 0.623);
+    border-radius: 6px;
+    padding: 10px;
+}
+
+
+h3 {
+    color: rgb(221, 221, 221);
+    
+}
+
+
+
+h4 {
+    text-align: center;
+}
+
+form {
+    background:rgba(0, 0, 0, 0.623) ;
+    border-radius: 6px;
+    padding: 10px;
+    color: #fff;
+}
+
+main {
+    padding: 15px 0;
+}
+
+.user {
+    text-align: center;
+    padding: 15px 0;
+}
+.users a, .users img{
+    display: block;
+}
+
+.users img{
+    margin: o auto;
+}
+
+.invalid {
+    width: 100%;
+    margin-top: .25rem;
+    font-size: 80%;
+    color: #dc3545;
+}
+
+.isInvalid {
+    border-color: #dc3545;
+    padding-right: calc(1.5em + .75rem);
+}
+
+footer {
+    padding: 10px 10px;
+    margin-top:15px;
+    background: #111;
+    color: #fff;
+    text-align: center;
+    max-width:1080px ;
+    margin: 0 auto;
+}

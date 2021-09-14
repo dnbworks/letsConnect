@@ -10,17 +10,14 @@
    require_once("../functions/appvar.php");
 
    require_once("../partials/navmenu.php");
-?>
 
-    
-<?php
 
 if (!isset($_SESSION['user_id'])) {
   echo '<p class="login">Please <a href="login.php">log in</a> to access this page.</p>';
   exit();
 } 
   
-
+$useridCookie = $_SESSION['user_id'];
 
 if(ISSET($_POST['submit'])){
 
@@ -36,6 +33,8 @@ $year = $_POST['year'];
 $city =  mysqli_real_escape_string($dbc, trim($_POST['city']));
 $state =  mysqli_real_escape_string($dbc, trim($_POST['state']));
 
+$old_picture = mysqli_real_escape_string($dbc, trim($_POST['old_image']));
+
 
 $picname = $_FILES['file']['name'];
 $pictype = $_FILES['file']['type'];
@@ -47,15 +46,9 @@ $picerror = $_FILES['file']['error'];
 
 if((!empty($firstname)) && (!empty($lastname)) && (!empty($gender)) && (!empty($day)) && (!empty($month)) && (!empty($year)) && (!empty($city)) && (!empty($state)) ){ 
     $birthdate = $year . "-" . $month . "-" . $day;
-
+    $query = "";
     if ($picture && $piclocation) {
-
-        if ($picturePath) {
-            if(file_exists('../uploads/' . $picturePath)){
-                unlink('../uploads/' . $picturePath);
-            } 
-        }
-        
+       
         $allowed = array("jpeg", "jpg", "png");
         $Actual = explode("/", $pictype);
         $ActualFormat = strtolower(end($Actual));
@@ -66,9 +59,36 @@ if((!empty($firstname)) && (!empty($lastname)) && (!empty($gender)) && (!empty($
                     $actualimage = time() . $picname;
                     $actualLocation  = location . $actualimage;
                     if(move_uploaded_file($piclocation, $actualLocation)){
+                      
+                        
+                        if ($old_picture && ($old_picture != $picname)) {
+                    
+                            if(file_exists(dirname(__DIR__) . '/uploads/profile.jpg'. $old_picture )){
+                                
+                                // echo dirname(__DIR__) . '/uploads/'. $old_picture . '<br>';
+                                // echo $firstname . '<br>';
+                                // echo $lastname. '<br>';
+                                // echo $gender. '<br>';
+                                // echo $day. '<br>';
+                                // echo $month. '<br>';
+                                // echo $year. '<br>';
+                                // echo $state. '<br>';
+                                // echo $city. '<br>';
+                        
+                                // echo $old_picture .  '<br>';
+                                // echo '<pre>';
+                                // var_dump($picture);
+                                // echo '</pre>';
+                                // exit;
+                                unlink(dirname(__DIR__) . '/uploads/profile.jpg'. $old_picture);
+                            } 
+                        }
+                      
         
                         $query = "UPDATE `mismatch_users` SET `first_name`= '$firstname',`last_name`= '$lastname', `gender`= '$gender', `birthdate`= '$birthdate', `city`= '$city',`state`= '$state', `picture`= '$actualimage' WHERE user_id = '$useridCookie'";
 
+                        // echo $query;
+                        // exit;
                     } else {
                         
                         echo '<p>An error occured in moving the image from a temporary folder</p>';
@@ -89,17 +109,20 @@ if((!empty($firstname)) && (!empty($lastname)) && (!empty($gender)) && (!empty($
         
    
     } else {
-        $query = "UPDATE `mismatch_users` SET `first_name`= '$firstname',`last_name`= '$lastname', `gender`= '$gender', `birthdate`= '$birthdate', `city`= '$city',`state`= '$state', `picture`= '$picturePath' WHERE user_id = '$useridCookie'";
-
+        $query = "UPDATE `mismatch_users` SET `first_name`= '$firstname',`last_name`= '$lastname', `gender`= '$gender', `birthdate`= '$birthdate', `city`= '$city',`state`= '$state' WHERE user_id = '$useridCookie'";
+      
     }
 
-    mysqli_query($dbc, $query) or die ("error");
-    mysqli_close($dbc);
-
-    header('Location:' . 'http://localhost/letsConnect/user/view-profile.php');
-    exit;
     
 }
+
+
+
+$results = mysqli_query($dbc, $query) or die ("error");
+mysqli_close($dbc);
+
+header('Location:' . 'http://localhost/letsConnect/user/view-profile.php');
+exit;
 
 } else {
     echo('<p class="login">You are logged in as ' . $_SESSION['username'] .
@@ -120,7 +143,7 @@ if((!empty($firstname)) && (!empty($lastname)) && (!empty($gender)) && (!empty($
         $birthdate = $row["birthdate"];
         $city = $row["city"];
         $state = $row["state"];
-        $picturePath = $row["picture"];
+        $old_picture = $row["picture"];
   
         $dateArray = explode("-", $birthdate);
 
@@ -131,9 +154,9 @@ if((!empty($firstname)) && (!empty($lastname)) && (!empty($gender)) && (!empty($
 
    
     }
+    mysqli_close($dbc);
 }
 
-mysqli_close($dbc);
 
 ?>  
 
@@ -274,11 +297,12 @@ mysqli_close($dbc);
                 <div class="form-group">
                   <div class="custom-file">
                     <input type="file" id="example-file-custom-button" class="custom-file-input" name="file" value="" >
+                    <input type="hidden"  name="old_image" value="<?php echo $old_picture; ?>" >
                     <label class="custom-file-label" for="example-file-custom-button" data-browse="Select file" >Custom file browser</label>
                   </div>
                 </div>
 
-                <img src="<?php echo location . $picturePath; ?>" alt="" srcset="" width="100px">
+                <img src="<?php echo location . $old_picture; ?>" alt="" srcset="" width="100px">
 
               <div class="form-group">
                   <div>

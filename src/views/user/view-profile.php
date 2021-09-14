@@ -29,6 +29,11 @@
     echo '<table>';
 
     echo '<tr>';
+    echo '<td>Picture: </td>';
+    echo '<td><img src="' . location . $row["picture"] . '" width="100px"></td>';
+    echo '</tr>';
+
+    echo '<tr>';
     echo '<td>Username: </td>';
     echo '<td>' . $row["username"] . '</td>';
     echo '</tr>';
