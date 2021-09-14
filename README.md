@@ -1,4 +1,4 @@
-# LetsConnect wwbsite
+# LetsConnect website
 
 ## Installation
 
