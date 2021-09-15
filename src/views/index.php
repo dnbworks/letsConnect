@@ -3,7 +3,7 @@
         <div class="container">
             <nav class="d-flex justify-content-between align-items-center">
                 <a href="/" class="logo">FindMyDate</a>
-                <a href="/login" class="signin">Sign In</a>
+                <a href="/register" class="signin">Sign Up</a>
             </nav>
             
             <div class="hero-section">
@@ -11,7 +11,7 @@
                     <div class="col-12 col-md-6 col-lg-6">
                         <h3>Find a warm and meaningful date with interesting and caring mismatches</h3>
                         <p>check out over 400 members, plus their photos</p>
-                        <a href="/register">Create Account</a>
+                        <a href="/login">Sign In</a>
                     </div>
                 </div>
                 

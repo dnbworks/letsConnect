@@ -14,4 +14,8 @@ class Controller {
         return Application::$app->router->renderView($view, $params);
     }
 
+    public function registerMiddleware(){
+        
+    }
+
 }

@@ -49,8 +49,14 @@ class Router {
     }
 
     public function renderView($view, $params = []){
+        Session::startSession();
+        
         $layout = $this->renderLayout();
         $content = $this->renderContent($view, $params);
+
+        if(!isset($_SESSION['user_id'])){
+            
+        }
 
         return str_replace("{{content}}", $content, $layout);
     }

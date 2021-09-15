@@ -16,6 +16,13 @@ class MismatchController extends Controller{
         return $this->render('index', $params);
     }
 
+    public function home(){
+        $params = [
+            'name' => 'welcome on homepage'
+        ];
+        return $this->render('home', $params);
+    }
+
     public function edit()
     {
         return $this->render('edit-profile');
