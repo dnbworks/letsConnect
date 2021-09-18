@@ -1,13 +1,24 @@
+<?php 
+    use app\core\Application;
+    
+   
+?>
 <div class="row justify-content-center">
     <div class="col-12 col-md-6 col-lg-5">
         <h3>FindMyDate - Sign In</h3>
+        <?php if(Application::$app->session->getFlash('success')): ?>
+            <div class="alert alert-success">
+                <?php echo Application::$app->session->getFlash('success'); ?>
+            </div>
+        <?php endif; ?>
+
         <form method="POST" action="">
             <div class="form-group">
-                <label for="username">Username</label>
+                <label for="email">Email</label>
                 <div>
-                    <input type="text" class="form-control <?php echo $model->hasError("username") ? 'isInvalid' : ''; ?>" id="username" placeholder="Username" name="username" value="<?php echo $model->username; ?>">
+                    <input type="text" class="form-control <?php echo $model->hasError("email") ? 'isInvalid' : ''; ?>" id="email" placeholder="Email" name="email" value="<?php echo $model->email; ?>">
                     <p class="valid-feedback">correct</p>
-                    <p class="invalid"><?php echo $model->getFirstError("username"); ?></p>
+                    <p class="invalid"><?php echo $model->getFirstError("email"); ?></p>
                 </div>
                 
             </div>

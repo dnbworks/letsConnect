@@ -1,4 +1,9 @@
-
+.nostyle {
+    background: transparent !important;
+    border-radius: 6px;
+    padding: 0px !important;
+    color: #fff;
+}
 
 .banner {
     max-width:1080px ;

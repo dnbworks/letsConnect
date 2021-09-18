@@ -4,23 +4,25 @@ namespace app\controllers;
 
 use app\core\Controller;
 use app\core\Request;
-use app\models\RegisterModel;
+use app\core\middleware\AuthMiddleware;
 
 
-class MismatchController extends Controller{
+
+class MismatchController extends Controller {
+
+    public function __construct()
+    {
+        $this->registerMiddleware(new AuthMiddleware(['edit', 'home']));
+    }
     
     public function index(){
-        $params = [
-            'name' => 'welcome on homepage'
-        ];
-        return $this->render('index', $params);
+        $this->setLayout('landingLayout');
+        return $this->render('index');
     }
 
     public function home(){
-        $params = [
-            'name' => 'welcome on homepage'
-        ];
-        return $this->render('home', $params);
+        $users = '';
+        return $this->render('home', ['users' => $users]);
     }
 
     public function edit()

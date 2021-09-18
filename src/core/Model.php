@@ -26,7 +26,10 @@ abstract class Model {
 
    public function validate()
    {
-   
+       if(property_exists($this, "month") && property_exists($this, "day") && property_exists($this, "year") && property_exists($this, "birthdate")){
+        $this->birthdate =  $this->month . "/" . $this->day . "/" . $this->year;
+       }
+       
        foreach($this->Rules() as $attribute => $rules){
            $value = $this->{$attribute};
     
@@ -40,23 +43,37 @@ abstract class Model {
                 // echo $value . "<br>";
               
                 if($ruleName === self::RULE_REQUIRED && !$value){
-                    $this->addError($attribute, self::RULE_REQUIRED);
+                    $this->addErrorForRule($attribute, self::RULE_REQUIRED);
                 }
                 // evaluate the value of it is a valid email
                 if($ruleName === self::RULE_EMAIL && !filter_var($value, FILTER_VALIDATE_EMAIL)){
-                    $this->addError($attribute, self::RULE_EMAIL);
+                    $this->addErrorForRule($attribute, self::RULE_EMAIL);
                 }
                 // checks whether the value passes the required min length
                 if($ruleName === self::RULE_MIN && strlen($value) < $rule['min']){
-                    $this->addError($attribute, self::RULE_MIN, $rule);
+                    $this->addErrorForRule($attribute, self::RULE_MIN, $rule);
                 }
                 // checks whether the value surpasses the required max length
                 if($ruleName === self::RULE_MAX && strlen($value) > $rule['max']){
-                    $this->addError($attribute, self::RULE_MAX, $rule);
+                    $this->addErrorForRule($attribute, self::RULE_MAX, $rule);
                 }
                 // checks whether the password matches the confirm password
                 if($ruleName === self::RULE_MATCH && $value !== $this->{$rule['match']}){
-                    $this->addError($attribute, self::RULE_MATCH, $rule);
+                    $this->addErrorForRule($attribute, self::RULE_MATCH, $rule);
+                }
+
+                if ($ruleName === self::RULE_UNIQUE) {
+                    $className = $rule['class'];
+                    $uniqueAttr = $rule['attribute'] ?? $attribute;
+                    $tableName = $className::tableName();
+                    $db = Application::$app->db;
+                    $statement = $db->prepare("SELECT * FROM $tableName WHERE $uniqueAttr = :$uniqueAttr");
+                    $statement->bindValue(":$uniqueAttr", $value);
+                    $statement->execute();
+                    $record = $statement->fetchObject();
+                    if ($record) {
+                        $this->addErrorForRule($attribute, self::RULE_UNIQUE, ['field' => $attribute]);
+                    }
                 }
             } 
        }
@@ -76,7 +93,7 @@ abstract class Model {
        ];
    }
 
-   public function addError(string $attribute, string $rule, $params = [])
+   private function addErrorForRule(string $attribute, string $rule, $params = [])
    {
         $errorMessage = $this->errorMessages()[$rule] ?? "";
         // replace the placeholder {max/min} with the actual number
@@ -85,6 +102,11 @@ abstract class Model {
         }
 
         $this->errors[$attribute][] = $errorMessage;
+   }
+
+   public function addError(string $attribute, string $message)
+   {
+        $this->errors[$attribute][] = $message;
    }
 
    public function hasError($attribute)

@@ -6,26 +6,30 @@ namespace app\controllers;
 use app\core\Controller;
 use app\core\Request;
 use app\models\LoginModel;
-use app\models\RegisterModel;
+use app\models\UserModel;
+use app\core\Application;
+use app\core\Response;
 
 class AuthController extends Controller{
     
-    public function login(Request $request)
+    public function login(Request $request, Response $response)
     {
         $this->setLayout('Auth');
 
         $loginModel = new LoginModel();
         if($request->isPost()){
             $loginModel->loadData($request->getBody());
-
+         
             if($loginModel->validate() && $loginModel->signIn()){
 
-                return 'login success';
+                $response->redirect('/home');
+                return;
             }
 
             // echo '<pre>';
-            // var_dump($loginModel);
+            // var_dump($request->getBody());
             // echo '</pre>';
+            // exit;
         
 
             return $this->render('login', ["model" => $loginModel]);
@@ -40,18 +44,19 @@ class AuthController extends Controller{
     {   
         $this->setLayout('Auth');
 
-        $registerModel = new RegisterModel();
+        $registerModel = new UserModel();
         if($request->isPost()){
             $registerModel->loadData($request->getBody());
+           
 
-            if($registerModel->validate() && $registerModel->register()){
+            if($registerModel->validate() && $registerModel->register())
+            {
+             
+                Application::$app->session->setFlash("success", "thank you for signing up. Your account has been created. You can login now");
 
-                return 'register success';
+                Application::$app->response->redirect("/login");
+                
             }
-
-            // echo '<pre>';
-            // var_dump($request->getBody());
-            // echo '</pre>';
 
 
             return $this->render('register', ["model" => $registerModel]);
@@ -61,4 +66,15 @@ class AuthController extends Controller{
 
         return $this->render('register', ["model" => $registerModel]);
     }
+
+    public function logout(Request $request, Response $response)
+    {   
+        if($request->isPost()){
+            Application::$app->logout();
+            $response->redirect('/');
+        }
+
+    }
+
 }
+

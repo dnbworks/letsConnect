@@ -2,14 +2,19 @@
 
 namespace app\core;
 
+use app\core\exception\NotFoundException;
+use app\core\Response;
+
 class Router {
 
     protected array $routes = [];
     public Request $request;
+    public Response $response;
 
-    public function __construct(Request $request)
+    public function __construct(Request $request, Response $response)
     {
         $this->request = $request;
+        $this->response = $response;
     }
 
     public function get($path, $callback){
@@ -27,8 +32,7 @@ class Router {
         $callback = $this->routes[$method][$path] ?? false;
 
         if($callback === false){
-            Application::$app->response->setStatusCode(404);
-            return $this->renderView('_404');
+            throw new NotFoundException();
         }
 
         if(is_string($callback)){
@@ -36,27 +40,30 @@ class Router {
         }
 
         if(is_array($callback)){
-            Application::$app->controller = new $callback[0]();
-            $callback[0] = Application::$app->controller;
+            /**
+             * @var $controller \thecodeholic\phpmvc\Controller
+             */
+            $controller = new $callback[0]();
+            Application::$app->controller =  $controller;
+            $controller->action = $callback[1];
+            $callback[0] = $controller;
+
+            foreach($controller->getMiddlewares() as $middleware){
+                $middleware->execute();
+            }
         }
 
-        // echo '<pre>';
-        // var_dump($callback);
-        // echo '</pre>';
 
-        return call_user_func($callback, $this->request);
+        return call_user_func($callback, $this->request, $this->response);
      
     }
 
     public function renderView($view, $params = []){
-        Session::startSession();
+ 
         
         $layout = $this->renderLayout();
         $content = $this->renderContent($view, $params);
 
-        if(!isset($_SESSION['user_id'])){
-            
-        }
 
         return str_replace("{{content}}", $content, $layout);
     }

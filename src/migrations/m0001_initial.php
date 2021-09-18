@@ -61,13 +61,13 @@ class m0001_initial
 
             CREATE TABLE `mismatch_users` (
             `user_id` int(11) NOT NULL,
-            `username` varchar(60) DEFAULT NULL,
-            `password` varchar(40) DEFAULT NULL,
+            `email` varchar(200) DEFAULT NULL,
+            `password` varchar(255) DEFAULT NULL,
             `join_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-            `first_name` varchar(60) DEFAULT NULL,
-            `last_name` varchar(60) DEFAULT NULL,
+            `firstname` varchar(60) DEFAULT NULL,
+            `lastname` varchar(60) DEFAULT NULL,
             `gender` char(1) DEFAULT NULL,
-            `birthdate` date DEFAULT NULL,
+            `birthdate` varchar(200) DEFAULT NULL,
             `city` varchar(60) DEFAULT NULL,
             `state` varchar(4) DEFAULT NULL,
             `picture` varchar(100) DEFAULT NULL

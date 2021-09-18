@@ -2,9 +2,11 @@
 
 namespace app\models;
 
-use app\core\Model;
+use app\core\DbModel;
 
-class RegisterModel extends Model{
+
+class UserModel extends DbModel
+{
     
     public string $firstname = "";
     public string $lastname = "";
@@ -18,11 +20,27 @@ class RegisterModel extends Model{
     public string $email = "";
     public string $password = "";
     public string $confirmPassword = "";
+    public string $birthdate = "";
+
 
     public function register()
     {
-        
+        $this->password = password_hash($this->password, PASSWORD_DEFAULT);
+        // $this->birthdate =  $this->month . "-" . $this->day . "-" . $this->year;
+        return $this->save();
     }
+
+    public static function tableName(): string
+    {
+        return 'mismatch_users';
+    }
+
+    public function attributes(): array
+
+    {
+        return ['firstname', 'lastname', 'gender', 'birthdate', 'password', 'email', 'state', 'city'];
+    }
+      
 
     public function Rules(): array
     {
@@ -35,9 +53,19 @@ class RegisterModel extends Model{
             'year' => [self::RULE_REQUIRED],
             'city' => [self::RULE_REQUIRED],
             'state' => [self::RULE_REQUIRED],
-            'email' => [self::RULE_REQUIRED, self::RULE_EMAIL],
+            'email' => [self::RULE_REQUIRED, self::RULE_EMAIL, [self::RULE_UNIQUE, 'class' => self::class]],
             'password' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min' => 8], [self::RULE_MAX, 'max' => 20]],
             'confirmPassword' => [self::RULE_REQUIRED, [self::RULE_MATCH, 'match' => 'password']],
         ];
+    }
+
+    public static function primaryKey(): string
+    {
+        return 'user_id';
+    }
+
+    public function getDisplayName()
+    {
+        return $this->firstname . ' ' . $this->lastname;
     }
 }

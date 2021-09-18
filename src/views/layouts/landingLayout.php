@@ -12,19 +12,9 @@
 <body>
   
     <div class="wrapper">
-        <div class="container">
-            <?php
-                include_once dirname(__DIR__). "/partials/header-nav.php";
-                include_once dirname(__DIR__). "/partials/navmenu.php";
-            ?>  
-        </div>
-        <div class="container">
-            {{content}}
-        </div>
-        
-        <?php
-            include_once dirname(__DIR__). "/partials/footer.php";
-        ?>
+
+        {{content}}
+
     </div>
   
 </body>
