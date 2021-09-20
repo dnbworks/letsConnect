@@ -3,7 +3,7 @@
 namespace app\core;
 
 use app\models\UserModel;
-
+use app\core\View;
 class Application {
 
     public Router $router;
@@ -11,12 +11,13 @@ class Application {
     public Response $response;
     public string $userClass;
     public static Application $app;
-    public Controller $controller;
+    public ?Controller $controller = null;
     public static string $ROOT_DIR;
     public Database $db;
     public Session $session;
     public ?UserModel $user;
-
+    public View $view;
+    public string $layout = 'error';
 
     public function __construct($rootPath, array $config)
     {
@@ -28,6 +29,7 @@ class Application {
         $this->router = new Router($this->request, $this->response);
         $this->db = new Database($config['db']);
         $this->session = new Session();
+        $this->view = new View();
 
         $userId = Application::$app->session->get('user');
         if ($userId) {
@@ -62,7 +64,8 @@ class Application {
         try{
             echo $this->router->resolve();
         }catch(\Exception $e){
-            echo $this->router->renderView('_error', [
+            $this->response->setStatusCode($e->getCode());
+            echo $this->view->renderView('_error', [
                 'exception' => $e,
             ]);
         }

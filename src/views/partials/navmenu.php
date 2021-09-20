@@ -11,9 +11,9 @@
         <a href="/edit-profile" class="nav-link">Edit Profile</a>
     </li>
     <li class="nav-item">
-        <a href="/Questionaire" class="nav-link">Questionaire</a>
+        <a href="/questionaire" class="nav-link">Questionaire</a>
     </li>
     <li class="nav-item">
-        <a href="/my-match" class="nav-link">my match </a>
+        <a href="/mismatch" class="nav-link">my match </a>
     </li>
 </ul>

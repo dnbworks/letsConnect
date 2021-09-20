@@ -1,8 +1,9 @@
+<?php
+    $this->title = 'Edit profile';
+?>
 
 
-<div class="row">
-      <div class="col-12 col-md-8 col-lg-6"> 
-          <h3>Edit profile</h3>
+          <h4>Edit profile</h4>
           <form method="POST" action="" enctype="multipart/form-data">
               <div class="row">
                   <div class="col">
@@ -150,5 +151,3 @@
                   </div>
               </div>
           </form>
-      </div>
-  </div>

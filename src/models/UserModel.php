@@ -27,6 +27,8 @@ class UserModel extends DbModel
     {
         $this->password = password_hash($this->password, PASSWORD_DEFAULT);
         // $this->birthdate =  $this->month . "-" . $this->day . "-" . $this->year;
+        // echo $this->password;
+        // exit;
         return $this->save();
     }
 
@@ -36,9 +38,8 @@ class UserModel extends DbModel
     }
 
     public function attributes(): array
-
     {
-        return ['firstname', 'lastname', 'gender', 'birthdate', 'password', 'email', 'state', 'city'];
+        return ['firstname', 'lastname', 'gender', 'password', 'birthdate', 'email', 'state', 'city'];
     }
       
 

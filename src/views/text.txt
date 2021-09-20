@@ -32,3 +32,8 @@
   mysqli_close($dbc);
    
 ?>
+
+
+<!-- <?php foreach($users as $user): ?>
+ 
+<?php endforeach; ?> -->

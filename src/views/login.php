@@ -1,6 +1,7 @@
 <?php 
     use app\core\Application;
-    
+    $this->title = 'Sign In';
+
    
 ?>
 <div class="row justify-content-center">

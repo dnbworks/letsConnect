@@ -108,6 +108,19 @@ footer {
     background: #111;
     color: #fff;
     text-align: center;
-    max-width:1080px ;
     margin: 0 auto;
+}
+
+.bg {
+    background: #eee;
+}
+
+.side-header {
+    padding-top: 15px;
+}
+
+.side-header img, .side-header a{
+  display: block;
+  text-align: center;
+  margin: 0 auto;
 }

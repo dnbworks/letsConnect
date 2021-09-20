@@ -14,6 +14,10 @@ class AuthController extends Controller{
     
     public function login(Request $request, Response $response)
     {
+        if(!Application::IsGuest()){
+            $response->redirect('/home');
+            exit;
+        } 
         $this->setLayout('Auth');
 
         $loginModel = new LoginModel();
@@ -40,14 +44,21 @@ class AuthController extends Controller{
         return $this->render('login', ["model" => $loginModel]);
     }
 
-    public function register(Request $request)
+    public function register(Request $request, Response $response)
     {   
+        if(!Application::IsGuest()){
+            $response->redirect('/home');
+            exit;
+        } 
         $this->setLayout('Auth');
 
         $registerModel = new UserModel();
         if($request->isPost()){
             $registerModel->loadData($request->getBody());
-           
+            // echo '<pre>';
+            // var_dump($request->getBody());
+            // echo '</pre>';
+            // exit;
 
             if($registerModel->validate() && $registerModel->register())
             {

@@ -1,3 +1,7 @@
+<?php
+    $this->title = 'Sign Up';
+?>
+
 <div class="row justify-content-center">
     <div class="col-12 col-md-6 col-lg-5">
         <h3>FindMyDate - Sign Up</h3>

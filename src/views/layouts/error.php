@@ -22,6 +22,10 @@
                 
             </nav>
             {{content}}
+
+            <div>
+                <a href="/" style="text-align: center; display:block; color:#fff;">Go back to Home</a>
+            </div>
         </div>
 
     </div>

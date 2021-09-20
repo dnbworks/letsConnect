@@ -1,4 +1,6 @@
-
+<?php
+    $this->title = '';
+?>
  <div class="banner">
         <div class="container">
             <nav class="d-flex justify-content-between align-items-center">
