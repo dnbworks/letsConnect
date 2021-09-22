@@ -5,7 +5,7 @@
 <div class="row justify-content-center">
     <div class="col-12 col-md-6 col-lg-5">
         <h3>FindMyDate - Sign Up</h3>
-        <p>Please enter your username and desired password to sign up to Mismatch</p>
+        <!-- <p>Please enter your username and desired password to sign up to Mismatch</p> -->
         <form method="POST" action="" id="form" novalidate class="needs-validation">
             <div class="row">
                 <div class="col">
@@ -140,13 +140,13 @@
                     </div>
                 </div> 
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
                 <div class="custom-file">
                     <input type="file" id="example-file-custom-button" class="custom-file-input" name="file" value="<?php echo $model->$profile_picture; ?>" >
                     <input type="hidden"  name="old_image" value="" >
                     <label class="custom-file-label" for="example-file-custom-button" data-browse="Select picture" >Profile picture</label>
                 </div>
-            </div>
+            </div> -->
             <div class="form-group">
                 <label for="username">Email</label>
                 <div>
@@ -160,7 +160,7 @@
                 <label for="password">Password</label>
                 <div>
                     <input type="password" class="form-control <?php echo $model->hasError("email") ? 'isInvalid' : ''; ?>" id="password" placeholder="Password" name="password" value="" required>
-                    <small id="input-helpBlock" class="form-text">Password must be atleast 8 characters long.</small>
+                    <!-- <small id="input-helpBlock" class="form-text">Password must be atleast 8 characters long.</small> -->
                     <p class="invalid"><?php echo $model->getFirstError("password"); ?></p>
                 </div>
             </div>

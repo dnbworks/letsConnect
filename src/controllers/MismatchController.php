@@ -9,6 +9,8 @@ use app\core\Response;
 use app\core\middleware\AuthMiddleware;
 use app\models\UserModel;
 use app\models\QuestionModel;
+use app\models\MismatchModel;
+
 
 
 
@@ -35,22 +37,88 @@ class MismatchController extends Controller {
     public function home(){
         $this->setLayout('main');
         $UserModel = new UserModel();
+        $QuestionModel = new QuestionModel();
+
+        $count = $QuestionModel::getQuestions([
+            'user_id' => Application::$app->user->user_id
+        ])['responseCount'];
+
         $users = $UserModel::findAll();
+      
         return $this->render('home', [
-            'users' => $users
+            'users' => $users,
+            'responseCount' => $count
         ]);
     }
 
-    public function edit()
+    public function edit(Request $request)
     {
+        $UserModel = new UserModel();
+        $user = $UserModel::findOne([
+            'user_id' => Application::$app->user->user_id
+        ]);
+
+        if($request->isPost()){
+            $UserModel->loadData($request->getBody());
+         
+
+            if($UserModel->validate()){
+        
+                // if ($UserModel->pictureArray && $UserModel->pictureArray['tmp_name']) {
+                //     if ($UserModel->old_image) {
+                //         unlink(Application::$ROOT_DIR . '/public/uploads' . $this->imagePath);
+                //     }
+                //     $this->imagePath = 'images/' . UtilHelper::randomString(8) . '/' . $this->imageFile['name'];
+                //     mkdir(dirname(__DIR__ . '/../public/' . $this->imagePath));
+                //     move_uploaded_file($this->imageFile['tmp_name'], __DIR__ . '/../public/' . $this->imagePath);
+                // }
+
+                // if($UserModel->update()){
+                //     Application::$app->session->setFlash("success", "Your profile has been update. ");
+                //     Application::$app->response->redirect("/edit-profile");
+                // }
+            
+
+            }
+
+            echo '<pre>';
+            var_dump( $UserModel);
+            echo '</pre>';
+            // echo $data;
+            exit;
+            return $this->render('edit-profile', ["model" => $UserModel]);
+        
+        }
+
         $this->setLayout('main');
-        return $this->render('edit-profile');
+        return $this->render('edit-profile', [
+            'user' => $user
+        ]);
     }
 
-    public function questionaire()
+    public function questionaire(Request $request)
     {
         $this->setLayout('main');
-        return $this->render('questionaire');
+
+        $QuestionModel = new QuestionModel();
+        $responses = $QuestionModel::getQuestions([
+            'user_id' => Application::$app->user->user_id
+        ])['responses'];
+
+        if($request->isPost()){
+            // $QuestionModel->loadData($request->getBody());
+
+            if($QuestionModel->register()){
+                Application::$app->session->setFlash("success", "Your responses have been saved. ");
+                Application::$app->response->redirect("/questionaire");
+
+            }
+
+            return $this->render('questionaire', ["responses" => $responses ]);
+        }
+
+        
+        return $this->render('questionaire', ["responses" => $responses ]);
     }
 
     public function profile(Request $request, Response $response)
@@ -69,8 +137,26 @@ class MismatchController extends Controller {
 
     public function mismatch()
     {
+        $mismatchModel = new MismatchModel();
+
+        $data = $mismatchModel::fetchResponse();
         $this->setLayout('main');
-        return $this->render('mismatch');
+
+        if(isset($data['errors'])){
+            return $this->render('mismatch', [
+                'errors' => $data['errors']
+            ]);
+            // echo '<pre>';
+            // var_dump( $data);
+            // echo '</pre>';
+            // // echo $data;
+            exit;
+        }
+        
+        return $this->render('mismatch', [
+            'user' => $data['user'][0],
+            'topics' => $data['topics'],
+        ]);
     }
 
     public function account()
@@ -79,3 +165,4 @@ class MismatchController extends Controller {
         return $this->render('account');
     }
 }
+

@@ -12,9 +12,9 @@ $this->title = 'View Profile';
             <td>Picture: </td>
             <td>
             <?php if($user->picture): ?>
-                <img src="/uploads/<?php echo $user->picture ;?>" alt="" srcset="">
+                <img src="/uploads/<?php echo $user->picture ;?>" alt="" srcset="" width="100px">
             <?php else: ?>
-                <img src="/assets/img/nopic.jpg" alt="" srcset="">
+                <img src="/assets/img/nopic.jpg" alt="" srcset="" width="100px">
             <?php endif; ?>
            </td>
         </tr>

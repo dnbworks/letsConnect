@@ -7,6 +7,7 @@ use app\core\DbModel;
 
 class QuestionModel extends DbModel
 {
+    public static $responses;
     
     public static function tableName(): string
     {
@@ -34,6 +35,17 @@ class QuestionModel extends DbModel
     public static function primaryKey(): string
     {
         return 'user_id';
+    }
+
+    public function register()
+    {
+        foreach($_POST as $response_id => $response){
+            $sql = "UPDATE `mismatch_response` SET `response`= '$response' WHERE response_id = '$response_id'";
+            $statement = self::prepare($sql);
+            $statement->execute();
+        }
+        
+        return true;
     }
 
    

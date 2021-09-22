@@ -16,12 +16,16 @@ class UserModel extends DbModel
     public string $year = "";
     public string $city = "";
     public string $state = "";
-    public string $profile_picture = "";
+    public string $picture = "";
+    public array $pictureArray = [];
+    public string $old_image = "";
     public string $email = "";
     public string $password = "";
     public string $confirmPassword = "";
     public string $birthdate = "";
 
+
+    
 
     public function register()
     {
@@ -32,6 +36,11 @@ class UserModel extends DbModel
         return $this->save();
     }
 
+    public function updateProfile()
+    {
+        return $this->update();
+    }
+
     public static function tableName(): string
     {
         return 'mismatch_users';
@@ -40,6 +49,11 @@ class UserModel extends DbModel
     public function attributes(): array
     {
         return ['firstname', 'lastname', 'gender', 'password', 'birthdate', 'email', 'state', 'city'];
+    }
+
+    public function updateAttributes(): array
+    {
+        return ['firstname', 'lastname', 'gender', 'birthdate', 'state', 'city', 'picture'];
     }
       
 

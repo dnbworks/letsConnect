@@ -5,9 +5,11 @@
 ?>
 
 <h4>Latest Members</h4>
-<div class="alert alert-info" role="alert">
-    Help members know your interests by filling in the <a href="/questionaire">Questionaire</a>
-</div>
+<?php if($responseCount == 0): ?>
+    <div class="alert alert-info" role="alert">
+        Help members know your interests by filling in the <a href="/questionaire">Questionaire</a>
+    </div>
+<?php endif; ?>
 
 
 <table class="table">
@@ -16,7 +18,7 @@
         <tr>
             <td>
             <?php if($user['picture']): ?>
-                <img src="/uploads/<?php echo $user->picture ;?>" alt="" srcset="">
+                <img src="/uploads/<?php echo $user['picture'] ;?>" alt="" srcset="" width="100px">
             <?php else: ?>
                 <img src="/assets/img/nopic.jpg" alt="" srcset="" >
             <?php endif; ?>

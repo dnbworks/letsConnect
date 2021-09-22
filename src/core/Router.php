@@ -40,9 +40,7 @@ class Router {
         }
 
         if(is_array($callback)){
-            /**
-             * @var $controller \thecodeholic\phpmvc\Controller
-             */
+          
             $controller = new $callback[0]();
             Application::$app->controller =  $controller;
             $controller->action = $callback[1];

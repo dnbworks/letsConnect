@@ -27,19 +27,25 @@ $app = new Application(dirname(__DIR__), $config);
 $app->router->get("/", [MismatchController::class, 'index']);
 
 $app->router->get("/home", [MismatchController::class, 'home']);
+
 $app->router->get("/edit-profile", [MismatchController::class, 'edit']);
 $app->router->post("/edit-profile", [MismatchController::class, 'edit']);
 
 $app->router->get("/view-profile", [MismatchController::class, 'profile']);
+
 $app->router->get("/questionaire", [MismatchController::class, 'questionaire']);
+$app->router->post("/questionaire", [MismatchController::class, 'questionaire']);
+
 $app->router->get("/mismatch", [MismatchController::class, 'mismatch']);
 $app->router->get("/account", [MismatchController::class, 'account']);
 
 
 $app->router->get("/login", [AuthController::class, 'login']);
 $app->router->post("/login", [AuthController::class, 'login']);
+
 $app->router->get("/register", [AuthController::class, 'register']);
 $app->router->post("/register", [AuthController::class, 'register']);
+
 $app->router->post("/logout", [AuthController::class, 'logout']);
 
 $app->run();

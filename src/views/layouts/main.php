@@ -1,6 +1,8 @@
 <?php
     use app\core\Application;
 
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,11 +28,16 @@
             <div class="row">
                 <div class="col-12 col-md-3 col-lg-3 bg">
                     <div class="side-header">
-                        <img src="/uploads/1631300011pinterest.png" alt="" srcset="" width="100px">
+                    <?php if(Application::$app->user->picture): ?>
+                        <img src="/uploads/<?php echo Application::$app->user->picture;?>" alt="" srcset="" width="100px">
+                    <?php else: ?>
+                        <img src="/assets/img/nopic.jpg" alt="" srcset="" width="100px">
+                    <?php endif; ?>
+                        <!-- <img src="/uploads/1631300011pinterest.png" alt="" srcset="" width="100px"> -->
                         <a href="/view-profile">
                             <?php echo Application::$app->user->firstname;?> <?php echo Application::$app->user->lastname;?> 
                         </a>
-                        <p></p>
+                        <p> </p>
                     </div>
                     <ul>
                         <li><a href="/home">Members</a></li>
