@@ -1,4 +1,6 @@
 <?php
+
+use app\core\Application;
     $this->title = 'Edit profile';
  
     $birthdate = explode("/", $user->birthdate);
@@ -51,6 +53,11 @@
 
 
           <h4>Edit profile</h4>
+          <?php if(Application::$app->session->getFlash('success')): ?>
+            <div class="alert alert-success">
+                <?php echo Application::$app->session->getFlash('success'); ?>
+            </div>
+        <?php endif; ?>
           <form method="POST" action="/edit-profile" enctype="multipart/form-data">
               <div class="row">
                   <div class="col">

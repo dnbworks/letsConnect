@@ -44,7 +44,7 @@
 <h4>Mismatched category breakdown:</h4>
 <img src="/uploads/<?php echo Application::$app->user->user_id; ?>-mymismatchgraph.png" alt="Mismatch category graph" /><br/>
 
-<h5>View <a href="/view-profile?id=<?php echo $user['user_id'];?>"><?php echo $user['firstname']; ?> <?php echo $user['lastname'] . "'s profile"; ?></a>.</h5>';
+<h5>View <a href="/view-profile?id=<?php echo $user['user_id'];?>"><?php echo $user['firstname']; ?> <?php echo $user['lastname'] . "'s profile"; ?></a>.</h5>
 
 <?php endif; ?>
  

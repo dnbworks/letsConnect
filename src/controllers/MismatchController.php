@@ -75,7 +75,7 @@ class MismatchController extends Controller {
 
                     
 
-                    move_uploaded_file($UserModel->pictureArray['tmp_name'], $UserModel->picture);
+                    move_uploaded_file($UserModel->pictureArray['tmp_name'], Application::$ROOT_DIR . '/public/uploads/' . $UserModel->picture);
 
                     
                     
@@ -95,8 +95,6 @@ class MismatchController extends Controller {
             
 
             }
-
-            
 
            
             return $this->render('edit-profile', ["user" => $UserModel]);

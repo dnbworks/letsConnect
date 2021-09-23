@@ -1,8 +1,6 @@
 <?php
     use app\core\Application;
 
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,7 +31,6 @@
                     <?php else: ?>
                         <img src="/assets/img/nopic.jpg" alt="" srcset="" width="100px">
                     <?php endif; ?>
-                        <!-- <img src="/uploads/1631300011pinterest.png" alt="" srcset="" width="100px"> -->
                         <a href="/view-profile">
                             <?php echo Application::$app->user->firstname;?> <?php echo Application::$app->user->lastname;?> 
                         </a>
