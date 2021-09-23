@@ -14,6 +14,11 @@ class QuestionModel extends DbModel
         return 'mismatch_response';
     }
 
+    public function updateAttributes(): array
+    {
+        return [];
+    }
+
     public function attributes(): array
     {
         return ['Appearance', 'Entertainment', 'Food', 'People', 'Activity'];

@@ -5,7 +5,7 @@ namespace app\models;
 use app\core\DbModel;
 
 
-class UserModel extends DbModel
+class UpdateProfileModel extends DbModel
 {
     
     public string $firstname = "";
@@ -16,29 +16,17 @@ class UserModel extends DbModel
     public string $year = "";
     public string $city = "";
     public string $state = "";
-    // public string $picture = "";
-    // public array $pictureArray = [];
+    public $picture = "";
+    public array $pictureArray = [];
     public string $old_image = "";
-    public string $email = "";
-    public string $password = "";
-    public string $confirmPassword = "";
     public string $birthdate = "";
 
 
 
-
-    public function register()
+    public function updateProfile($attributes)
     {
-        $this->password = password_hash($this->password, PASSWORD_DEFAULT);
-        // $this->birthdate =  $this->month . "-" . $this->day . "-" . $this->year;
-        // echo $this->password;
-        // exit;
-        return $this->save();
-    }
-
-    public function updateProfile()
-    {
-        return $this->update();
+        $this->birthdate =  $this->month . "/" . $this->day . "/" . $this->year;
+        return $this->update($attributes);
     }
 
     public static function tableName(): string
@@ -67,10 +55,7 @@ class UserModel extends DbModel
             'month' => [self::RULE_REQUIRED],
             'year' => [self::RULE_REQUIRED],
             'city' => [self::RULE_REQUIRED],
-            'state' => [self::RULE_REQUIRED],
-            'email' => [self::RULE_REQUIRED, self::RULE_EMAIL, [self::RULE_UNIQUE, 'class' => self::class]],
-            'password' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min' => 8], [self::RULE_MAX, 'max' => 20]],
-            'confirmPassword' => [self::RULE_REQUIRED, [self::RULE_MATCH, 'match' => 'password']],
+            'state' => [self::RULE_REQUIRED]
         ];
     }
 
@@ -79,8 +64,4 @@ class UserModel extends DbModel
         return 'user_id';
     }
 
-    public function getDisplayName()
-    {
-        return $this->firstname . ' ' . $this->lastname;
-    }
 }

@@ -17,7 +17,7 @@ abstract class DbModel extends Model{
     public function save(){
         $tableName = $this->tableName();
        
-        $attributes = $this->updateAttributes();
+        $attributes = $this->attributes();
         $params = array_map(fn($attr) => ":$attr", $attributes);
 
         // echo '<pre>';
@@ -39,18 +39,24 @@ abstract class DbModel extends Model{
     }
 
 
-    public function update(){
+    public function update($attributes){
         $tableName = $this->tableName();
        
-        $attributes = $this->attributes();
-        $params = array_map(fn($attr) => ":$attr", $attributes);
+        $attributes = $attributes;
+        $params = array_map(fn($attr) => "$attr = :$attr ", $attributes);
 
-        // echo '<pre>';
-        // var_dump($attributes);
-        // echo '</pre>';
+      
+
+        $sql = "UPDATE $tableName SET " . implode(',', $params) . "WHERE user_id = '".Application::$app->user->user_id."'";
+
+           //    echo '<pre>';
+    //     var_dump( $params);
+    //     echo '</pre>';
+
+        // echo $sql;
         // exit;
 
-        $statement = self::prepare("INSERT INTO $tableName (". implode(",", $attributes).") VALUES (". implode(",", $params).");");
+        $statement = self::prepare($sql);
 
 
         foreach($attributes as $attribute){
@@ -60,6 +66,9 @@ abstract class DbModel extends Model{
         $statement->execute();
 
        return true;
+
+ 
+
         
     }
 

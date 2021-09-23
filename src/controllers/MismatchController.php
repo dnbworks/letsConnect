@@ -10,6 +10,7 @@ use app\core\middleware\AuthMiddleware;
 use app\models\UserModel;
 use app\models\QuestionModel;
 use app\models\MismatchModel;
+use app\models\UpdateProfileModel;
 
 
 
@@ -53,40 +54,52 @@ class MismatchController extends Controller {
 
     public function edit(Request $request)
     {
-        $UserModel = new UserModel();
+        $UserModel = new UpdateProfileModel();
         $user = $UserModel::findOne([
             'user_id' => Application::$app->user->user_id
         ]);
 
         if($request->isPost()){
             $UserModel->loadData($request->getBody());
-         
-
+            
             if($UserModel->validate()){
-        
-                // if ($UserModel->pictureArray && $UserModel->pictureArray['tmp_name']) {
-                //     if ($UserModel->old_image) {
-                //         unlink(Application::$ROOT_DIR . '/public/uploads' . $this->imagePath);
-                //     }
-                //     $this->imagePath = 'images/' . UtilHelper::randomString(8) . '/' . $this->imageFile['name'];
-                //     mkdir(dirname(__DIR__ . '/../public/' . $this->imagePath));
-                //     move_uploaded_file($this->imageFile['tmp_name'], __DIR__ . '/../public/' . $this->imagePath);
-                // }
+               
+                if ($UserModel->pictureArray && $UserModel->pictureArray['tmp_name']) {
+                    
+                    if ($UserModel->old_image) {
+                    
+                        unlink(Application::$ROOT_DIR . '/public/uploads/' . $UserModel->old_image);
+                    }
 
-                // if($UserModel->update()){
-                //     Application::$app->session->setFlash("success", "Your profile has been update. ");
-                //     Application::$app->response->redirect("/edit-profile");
-                // }
+                    $UserModel->picture = Application::$app->user->user_id . '-' . $UserModel->picture;
+
+                    
+
+                    move_uploaded_file($UserModel->pictureArray['tmp_name'], $UserModel->picture);
+
+                    
+                    
+                    $sql = "UPDATE `mismatch_users` SET `firstname`= :firstname,`lastname`= :lastname, `gender`= :gender, `birthdate`= :birthdate, `city`= :city,`state`= :state, `picture`= :picture WHERE user_id = '" . Application::$app->user->user_id ."'";
+
+                    $attributes = ['firstname', 'lastname', 'gender', 'birthdate', 'city', 'state', 'picture'];
+                } else {
+                    $attributes = ['firstname', 'lastname', 'gender', 'birthdate', 'city', 'state'];
+                    $sql = "UPDATE `mismatch_users` SET `firstname`= :firstname,`lastname`= :lastname, `gender`= :gender, `birthdate`= :birthdate, `city`= :city,`state`= :state WHERE user_id = '" . Application::$app->user->user_id ."'";
+                } 
+                
+
+                if($UserModel->updateProfile($attributes)){
+                    Application::$app->session->setFlash("success", "Your profile has been update. ");
+                    Application::$app->response->redirect("/edit-profile");
+                }
             
 
             }
 
-            echo '<pre>';
-            var_dump( $UserModel);
-            echo '</pre>';
-            // echo $data;
-            exit;
-            return $this->render('edit-profile', ["model" => $UserModel]);
+            
+
+           
+            return $this->render('edit-profile', ["user" => $UserModel]);
         
         }
 

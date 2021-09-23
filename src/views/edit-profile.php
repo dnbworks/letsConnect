@@ -57,7 +57,8 @@
                       <div class="form-group">
                           <label for="firstname">First name</label>
                           <div>
-                              <input type="text" class="form-control" id="firstname" placeholder="First name" name="firstname" value="<?php echo $user->firstname;?>" >
+                              <input type="text" class="form-control <?php echo $user->hasError("firstname") ? 'isInvalid' : ''; ?>" id="firstname" placeholder="First name" name="firstname" value="<?php echo $user->firstname;?>" >
+                              <p class="invalid"><?php echo $user->getFirstError("firstname"); ?></p>
                           </div>
                       </div>
                   </div> 
@@ -65,14 +66,15 @@
                       <div class="form-group">
                           <label for="lastname">Last name</label>
                           <div>
-                              <input type="text" class="form-control" id="lastname" placeholder="Last name" name="lastname" value="<?php echo $user->lastname;?>" >
+                              <input type="text" class="form-control <?php echo $user->hasError("lastname") ? 'isInvalid' : ''; ?>" id="lastname" placeholder="Last name" name="lastname" value="<?php echo $user->lastname;?>" >
+                              <p class="invalid"><?php echo $user->getFirstError("lastname"); ?></p>
                           </div>
                       </div>
                   </div> 
               </div>
                 <?php  if($user->gender == 'M') :?>
                 <div class="form-check form-check-inline">
-                  <input class="form-check-input" type="radio" name="Gender" id="female" value="Female"  >
+                  <input class="form-check-input" type="radio" name="gender" id="female" value="Female"  >
                   <label class="form-check-label" for="female">Female</label>
                 </div>
                 <div class="form-check form-check-inline">
@@ -85,7 +87,7 @@
                   <label class="form-check-label" for="female">Female</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="Gender" id="male" value="Male" >
+                    <input class="form-check-input" type="radio" name="gender" id="male" value="Male" >
                     <label class="form-check-label" for="male">Male</label>
                 </div>
                 <?php  endif; ?>
@@ -182,7 +184,8 @@
                         <div class="form-group">
                             <label for="city">City</label>
                             <div>
-                                <input type="text" class="form-control" id="city" placeholder="City" name="city" value="<?php echo $user->city;?>" >
+                                <input type="text" class="form-control <?php echo $user->hasError("city") ? 'isInvalid' : ''; ?>" id="city" placeholder="City" name="city" value="<?php echo $user->city;?>" >
+                                <p class="invalid"><?php echo $user->getFirstError("city"); ?></p>
                             </div>
                         </div>
                   </div> 
@@ -190,7 +193,8 @@
                         <div class="form-group">
                             <label for="state">State</label>
                             <div>
-                                <input type="text" class="form-control" id="state" placeholder="State" name="state" value="<?php echo $user->state;?>" > 
+                                <input type="text" class="form-control <?php echo $user->hasError("state") ? 'isInvalid' : ''; ?>" id="state" placeholder="State" name="state" value="<?php echo $user->state;?>" > 
+                                <p class="invalid"><?php echo $user->getFirstError("state"); ?></p>
                             </div>
                         </div>
                   </div> 
